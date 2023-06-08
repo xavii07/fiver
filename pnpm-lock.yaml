@@ -2,66 +2,69 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@emotion/react':
-    specifier: ^11.11.0
+    specifier: 11.11.0
     version: 11.11.0(@types/react@18.0.28)(react@18.2.0)
   '@emotion/styled':
-    specifier: ^11.11.0
+    specifier: 11.11.0
     version: 11.11.0(@emotion/react@11.11.0)(@types/react@18.0.28)(react@18.2.0)
+  '@mui/icons-material':
+    specifier: ^5.11.16
+    version: 5.11.16(@mui/material@5.13.0)(@types/react@18.0.28)(react@18.2.0)
   '@mui/material':
-    specifier: ^5.13.0
+    specifier: 5.13.0
     version: 5.13.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
   axios:
-    specifier: ^1.4.0
+    specifier: 1.4.0
     version: 1.4.0
   formik:
-    specifier: ^2.2.9
+    specifier: 2.2.9
     version: 2.2.9(react@18.2.0)
   react:
-    specifier: ^18.2.0
+    specifier: 18.2.0
     version: 18.2.0
   react-dom:
-    specifier: ^18.2.0
+    specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
   react-router-dom:
-    specifier: ^6.11.1
+    specifier: 6.11.1
     version: 6.11.1(react-dom@18.2.0)(react@18.2.0)
   tss-react:
-    specifier: ^4.8.3
+    specifier: 4.8.3
     version: 4.8.3(@emotion/react@11.11.0)(react@18.2.0)
   yup:
-    specifier: ^1.1.1
+    specifier: 1.1.1
     version: 1.1.1
 
 devDependencies:
   '@types/react':
-    specifier: ^18.0.28
+    specifier: 18.0.28
     version: 18.0.28
   '@types/react-dom':
-    specifier: ^18.0.11
+    specifier: 18.0.11
     version: 18.0.11
   '@typescript-eslint/eslint-plugin':
-    specifier: ^5.57.1
+    specifier: 5.57.1
     version: 5.57.1(@typescript-eslint/parser@5.57.1)(eslint@8.38.0)(typescript@5.0.2)
   '@typescript-eslint/parser':
-    specifier: ^5.57.1
+    specifier: 5.57.1
     version: 5.57.1(eslint@8.38.0)(typescript@5.0.2)
   '@vitejs/plugin-react-swc':
-    specifier: ^3.0.0
+    specifier: 3.0.0
     version: 3.0.0(vite@4.3.2)
   eslint:
-    specifier: ^8.38.0
+    specifier: 8.38.0
     version: 8.38.0
   eslint-plugin-react-hooks:
-    specifier: ^4.6.0
+    specifier: 4.6.0
     version: 4.6.0(eslint@8.38.0)
   eslint-plugin-react-refresh:
-    specifier: ^0.3.4
+    specifier: 0.3.4
     version: 0.3.4(eslint@8.38.0)
   typescript:
-    specifier: ^5.0.2
+    specifier: 5.0.2
     version: 5.0.2
   vite:
-    specifier: ^4.3.2
+    specifier: 4.3.2
     version: 4.3.2
 
 packages:
@@ -512,6 +515,23 @@ packages:
 
   /@mui/core-downloads-tracker@5.13.0:
     resolution: {integrity: sha512-5nXz2k8Rv2ZjtQY6kXirJVyn2+ODaQuAJmXSJtLDUQDKWp3PFUj6j3bILqR0JGOs9R5ejgwz3crLKsl6GwjwkQ==}
+    dev: false
+
+  /@mui/icons-material@5.11.16(@mui/material@5.13.0)(@types/react@18.0.28)(react@18.2.0):
+    resolution: {integrity: sha512-oKkx9z9Kwg40NtcIajF9uOXhxiyTZrrm9nmIJ4UjkU2IdHpd4QVLbCc/5hZN/y0C6qzi2Zlxyr9TGddQx2vx2A==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@mui/material': ^5.0.0
+      '@types/react': ^17.0.0 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.21.5
+      '@mui/material': 5.13.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': 18.0.28
+      react: 18.2.0
     dev: false
 
   /@mui/material@5.13.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0):
