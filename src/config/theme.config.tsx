@@ -29,15 +29,30 @@ const theme = createTheme({
   },
   components: {
     MuiButton: {
-      defaultProps: {
-        style: {
-          textTransform: "none",
-          color: themePallete.background,
-          fontSize: "1rem",
-        }
-      }
-    }
-  }
+      variants: [
+        {
+          props: { variant: "contained", color: "primary" },
+          style: {
+            textTransform: "none",
+            color: themePallete.background,
+            fontSize: "0.8rem",
+            borderRadius: "0",
+          },
+        },
+        {
+          props: { variant: "outlined", color: "primary" },
+          style: {
+            textTransform: "none",
+            color: themePallete.primary,
+            fontSize: "0.8rem",
+            borderRadius: "0",
+            fontWeight: "bold",
+            padding: "0.3 rem 1rem",
+          },
+        },
+      ],
+    },
+  },
 });
 
 export const ThemeConfig: React.FC<ThemeProps> = ({ children }) => {
