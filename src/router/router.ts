@@ -6,4 +6,7 @@ export const RUTAS_PUBLICAS = {
 
 export const RUTAS_PRIVADAS = {
   HOME: "/admin",
+  USUARIOS: "/admin/usuarios",
+  VEHICULOS: "/admin/vehiculos",
+  REGISTRO_VEHICULO: "/admin/vehiculos/registro",
 };
