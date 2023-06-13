@@ -1,8 +1,31 @@
-import { useTable, useGlobalFilter, usePagination } from "react-table";
-import BusquedaTabla from "../BusquedaTabla";
-import Paginacion from "../Paginacion";
 import "./styles.css";
-import { Table, TableContainer } from "@mui/material";
+import {
+  Badge,
+  Box,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import {
+  Table as ReactTable,
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  flexRender,
+} from "@tanstack/react-table";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
 
 interface PropsTabla {
   columns: any;
@@ -17,30 +40,16 @@ const TablaComponent: React.FC<PropsTabla> = ({
   totalData,
   nombre,
 }) => {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    state,
-    setGlobalFilter,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    { columns, data, initialState: { pageIndex: 0 } },
-    useGlobalFilter,
-    usePagination
-  );
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    debugTable: true,
+  });
 
-  const { globalFilter } = state;
+  const { pageSize, pageIndex } = table.getState().pagination;
 
   if (totalData === 0)
     return (
@@ -48,57 +57,142 @@ const TablaComponent: React.FC<PropsTabla> = ({
         No se encontro ningun medico registrado :(
       </p>
     );
+
   return (
-    <>
-      <div className="fondoMRegistrados"></div>
-      <TableContainer className="containerMRegistrados">
-        <BusquedaTabla
-          nombre={nombre}
-          totalData={totalData}
-          globalFilter={globalFilter}
-          setGlobalFilter={setGlobalFilter}
-        />
-        <Table {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
+    <Box sx={{ width: "100%" }}>
+      <Typography variant="h6" component="div" sx={{ mb: 2 }}>
+        {nombre}
+      </Typography>
+      <Badge badgeContent={totalData} color="secondary" />
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableCell
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      sx={{ fontWeight: "bold", textAlign: "center" }}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <div>
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </div>
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
             ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
+          </TableHead>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => {
               return (
-                <tr {...row.getRowProps()} className="fila">
-                  {row.cells.map((cell) => {
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
                     return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     );
                   })}
-                </tr>
+                </TableRow>
               );
             })}
-          </tbody>
+          </TableBody>
         </Table>
-        <Paginacion
-          canNextPage={canNextPage}
-          canPreviousPage={canPreviousPage}
-          gotoPage={gotoPage}
-          nextPage={nextPage}
-          pageIndex={pageIndex}
-          pageSize={pageSize}
-          pageOptions={pageOptions}
-          pageCount={pageCount}
-          previousPage={previousPage}
-          setPageSize={setPageSize}
-        />
       </TableContainer>
-    </>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25, { label: "All", value: data.length }]}
+        component="div"
+        count={table.getFilteredRowModel().rows.length}
+        rowsPerPage={pageSize}
+        page={pageIndex}
+        SelectProps={{
+          inputProps: { "aria-label": "Rows per page" },
+          native: true,
+        }}
+        onPageChange={(_, page) => {
+          table.setPageIndex(page);
+        }}
+        onRowsPerPageChange={(e) => {
+          const size = e.target.value ? Number(e.target.value) : 10;
+          table.setPageSize(size);
+        }}
+        ActionsComponent={TablePaginationActions}
+      />
+    </Box>
+  );
+};
+
+const TablePaginationActions = (props: any) => {
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
+
+  const handleFirstPageButtonClick = (event: any) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event: any) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event: any) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event: any) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
   );
 };
 
