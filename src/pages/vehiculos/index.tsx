@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { Stack } from "@mui/system";
 import { IconTrashX, IconPencilPlus, IconEyeEdit } from "@tabler/icons-react";
 import "./styles.css";
+import BotonComponent from "../../components/Boton";
+import { RUTAS_PRIVADAS } from "../../router/router";
 
 const VehiculosPage: React.FC = () => {
   const columns = useMemo(
@@ -56,6 +58,30 @@ const VehiculosPage: React.FC = () => {
         id: "anio",
         header: "Año",
         accessorKey: "anio",
+      },
+      {
+        id: "precioHora",
+        header: "$ Hora",
+        accessorKey: "precioHora",
+        cell: ({
+          cell,
+        }: {
+          cell: {
+            getValue: () => string;
+          };
+        }) => <p style={{ textAlign: "center" }}>${cell.getValue()}</p>,
+      },
+      {
+        id: "precioDia",
+        header: "$ Dia",
+        accessorKey: "precioDia",
+        cell: ({
+          cell,
+        }: {
+          cell: {
+            getValue: () => string;
+          };
+        }) => <p>${cell.getValue()}</p>,
       },
       {
         id: "estado",
@@ -117,6 +143,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -129,6 +157,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -141,6 +171,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         placa: "PAC9079",
@@ -153,6 +185,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -165,6 +199,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -177,6 +213,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -189,6 +227,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -201,6 +241,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -213,6 +255,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -225,6 +269,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -237,6 +283,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -249,6 +297,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -261,6 +311,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -273,6 +325,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -285,6 +339,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -297,6 +353,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -309,6 +367,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -321,6 +381,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -333,6 +395,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -345,6 +409,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -357,6 +423,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -369,6 +437,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -381,6 +451,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -393,6 +465,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -405,6 +479,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -417,6 +493,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -429,6 +507,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -441,6 +521,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -453,6 +535,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -465,6 +549,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -477,6 +563,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -489,6 +577,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -501,6 +591,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -513,6 +605,8 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
       {
         imagen:
@@ -525,12 +619,14 @@ const VehiculosPage: React.FC = () => {
         anio: "2019",
         estado: "Activo",
         transmision: "Automatico",
+        precioHora: 20,
+        precioDia: 100,
       },
     ],
     []
   );
 
-  const totalData = 5;
+  const totalData = useMemo(() => data.length, [data]);
 
   return (
     <Container
@@ -542,7 +638,7 @@ const VehiculosPage: React.FC = () => {
       }}
     >
       <Typography variant="h5" sx={{ textTransform: "uppercase" }}>
-        Vehiculos
+        Vehiculos fiver
       </Typography>
       <TablaComponent
         columns={columns}
@@ -550,6 +646,12 @@ const VehiculosPage: React.FC = () => {
         totalData={totalData}
         nombre="Vehiculos"
       />
+      <div style={{ width: "100%", marginTop: "2rem", paddingBottom: "4rem" }}>
+        <BotonComponent
+          titulo="Agregar vehiculo"
+          to={`${RUTAS_PRIVADAS.REGISTRO_VEHICULO}`}
+        />
+      </div>
     </Container>
   );
 };

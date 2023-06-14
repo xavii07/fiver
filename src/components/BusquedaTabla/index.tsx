@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Input, TextField } from "@mui/material";
 import Badge from "@mui/material/Badge";
-import { FilledInput } from "@mui/material";
-import { InputAdornment } from "@mui/material";
-import { FormControl } from "@mui/material";
+import { TextField } from "@mui/material";
+import NoCrashIcon from "@mui/icons-material/NoCrash";
 
 interface PropsBusquedaTabla {
   nombre: string;
@@ -22,7 +20,6 @@ const BusquedaTabla: React.FC<PropsBusquedaTabla> = ({
     <div
       style={{
         display: "flex",
-        backgroundColor: "#ba3131",
         justifyContent: "space-between",
         alignItems: "center",
         marginTop: "1rem",
@@ -30,9 +27,14 @@ const BusquedaTabla: React.FC<PropsBusquedaTabla> = ({
         width: "100%",
       }}
     >
-      <div style={{ display: "inline-flex", gap: "1", alignItems: "baseline" }}>
-        <Badge badgeContent={totalData} color="primary">
-          <p style={{ fontSize: "12px", color: "#777" }}>{nombre}</p>
+      <div style={{ display: "inline-flex", gap: 4, alignItems: "baseline" }}>
+        <p style={{ fontSize: "12px", color: "#777" }}>{nombre}</p>
+        <Badge
+          badgeContent={totalData}
+          color="success"
+          sx={{ fontSize: "4rem", width: "2rem", height: "2rem" }}
+        >
+          <NoCrashIcon />
         </Badge>
       </div>
       <div>
