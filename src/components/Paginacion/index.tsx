@@ -1,57 +1,70 @@
-import Pagination from "@mui/material/Pagination";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IconButton, Box, useTheme } from "@mui/material";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
 
-interface PropsPaginacion {
-  pageIndex: number;
-  pageSize: number;
-  pageOptions: number[];
-  gotoPage: any;
-  previousPage: any;
-  nextPage: any;
-  canNextPage: boolean;
-  canPreviousPage: boolean;
-  setPageSize: any;
-  pageCount: number;
-}
+const TablePaginationActions = (props: any) => {
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
 
-const Paginacion: React.FC<PropsPaginacion> = ({
-  pageIndex,
-  pageSize,
-  pageOptions,
-  gotoPage,
-  previousPage,
-  nextPage,
-  canNextPage,
-  canPreviousPage,
-  setPageSize,
-  pageCount,
-}) => {
+  const handleFirstPageButtonClick = (event: any) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event: any) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event: any) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event: any) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
   return (
-    <div className="d-flex justify-content-between align-items-center">
-      <select
-        value={pageSize}
-        onChange={(e) => {
-          setPageSize(Number(e.target.value));
-        }}
-        className="form-select mb-0"
-        style={{ fontSize: "14px", width: "auto" }}
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
       >
-        {[5, 10, 15].map((pageSize) => (
-          <option key={pageSize} value={pageSize}>
-            Mostrar {pageSize}
-          </option>
-        ))}
-      </select>
-      <div className="d-flex gap-2 align-items-center">
-        <span>
-          Pagina{" "}
-          <strong>
-            {pageIndex + 1} de {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <Pagination count={pageCount} />
-      </div>
-    </div>
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
   );
 };
 
-export default Paginacion;
+export default TablePaginationActions;

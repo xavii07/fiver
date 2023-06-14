@@ -20,13 +20,11 @@
     "@tanstack/react-table": "8.9.2",
     "axios": "1.4.0",
     "formik": "2.2.9",
-    "material": "link:@types/@mui/material",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.11.1",
     "react-table": "7.8.0",
     "tss-react": "4.8.3",
-    "x-data-grid: 5.17.21": "link:@mui/x-data-grid: 5.17.21",
     "yup": "1.1.1"
   },
   "devDependencies": {
