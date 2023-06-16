@@ -1,4 +1,4 @@
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage, Field, FieldProps } from "formik";
 import {
   Grid,
   TextField,
@@ -12,20 +12,24 @@ import {
   Radio,
 } from "@mui/material";
 import "./styles.css";
-import { automovilValidation } from "../../validaciones/automovilesValidation";
+import { vehiculoValidation } from "../../utils/vehiculoValidation";
 import { initialValues, marcasVehiculos, tipoTransmision } from "./values";
 import MessageErr from "../MessageError";
+
+interface FormValues {
+  files: FileList | null;
+}
 
 const RegistroVehiculo: React.FC = () => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={automovilValidation}
+      validationSchema={vehiculoValidation}
       onSubmit={(values) => {
         console.log(values);
       }}
     >
-      {({ errors, touched, values, handleChange }) => (
+      {({ errors, touched, values, handleChange, handleBlur }) => (
         <Form
           style={{
             marginTop: "1rem",
@@ -47,6 +51,7 @@ const RegistroVehiculo: React.FC = () => {
                 value={values.placa}
                 name="placa"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 variant="outlined"
                 placeholder="PAC9458"
                 autoComplete="off"
@@ -65,10 +70,10 @@ const RegistroVehiculo: React.FC = () => {
                 size="small"
                 name="marca"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.marca}
                 fullWidth
                 defaultValue={marcasVehiculos[0].nombre}
-                helperText="Seleccione la marca del vehiculo"
               >
                 {marcasVehiculos.map((marca) => (
                   <MenuItem key={marca.id} value={marca.nombre}>
@@ -87,6 +92,7 @@ const RegistroVehiculo: React.FC = () => {
                 size="small"
                 name="modelo"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.modelo}
                 error={errors.modelo && touched.modelo ? true : false}
               />
@@ -101,14 +107,13 @@ const RegistroVehiculo: React.FC = () => {
                 placeholder="Automovil"
                 fullWidth
                 size="small"
-                name="tipoVehiculo"
+                name="tipo"
                 onChange={handleChange}
-                value={values.tipoVehiculo}
-                error={
-                  errors.tipoVehiculo && touched.tipoVehiculo ? true : false
-                }
+                onBlur={handleBlur}
+                value={values.tipo}
+                error={errors.tipo && touched.tipo ? true : false}
               />
-              <ErrorMessage name="tipoVehiculo">
+              <ErrorMessage name="tipo">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
@@ -120,8 +125,9 @@ const RegistroVehiculo: React.FC = () => {
                 placeholder="2021"
                 fullWidth
                 size="small"
-                name="anioFabricacion"
+                name="anio"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.anio}
                 error={errors.anio && touched.anio ? true : false}
               />
@@ -139,6 +145,7 @@ const RegistroVehiculo: React.FC = () => {
                 fullWidth
                 name="color"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.color}
                 error={errors.color && touched.color ? true : false}
               />
@@ -153,14 +160,11 @@ const RegistroVehiculo: React.FC = () => {
                 size="small"
                 fullWidth
                 defaultValue={tipoTransmision[0].values}
-                name="tipoTransmision"
+                name="transmision"
                 onChange={handleChange}
-                value={values.tipoTransmision}
-                error={
-                  errors.tipoTransmision && touched.tipoTransmision
-                    ? true
-                    : false
-                }
+                onBlur={handleBlur}
+                value={values.transmision}
+                error={errors.transmision && touched.transmision ? true : false}
               >
                 {tipoTransmision.map((tipoT) => (
                   <MenuItem key={tipoT.id} value={tipoT.values}>
@@ -168,7 +172,7 @@ const RegistroVehiculo: React.FC = () => {
                   </MenuItem>
                 ))}
               </TextField>
-              <ErrorMessage name="tipoTransmision">
+              <ErrorMessage name="transmision">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
@@ -180,16 +184,13 @@ const RegistroVehiculo: React.FC = () => {
                 autoComplete="off"
                 size="small"
                 fullWidth
-                name="tipoCombustible"
+                name="combustible"
                 onChange={handleChange}
-                value={values.tipoCombustible}
-                error={
-                  errors.tipoCombustible && touched.tipoCombustible
-                    ? true
-                    : false
-                }
+                onBlur={handleBlur}
+                value={values.combustible}
+                error={errors.combustible && touched.combustible ? true : false}
               />
-              <ErrorMessage name="tipoCombustible">
+              <ErrorMessage name="combustible">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
@@ -201,8 +202,9 @@ const RegistroVehiculo: React.FC = () => {
                 placeholder="3000"
                 fullWidth
                 size="small"
-                name="motorHP"
+                name="motorHp"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.motorHp}
                 error={errors.motorHp && touched.motorHp ? true : false}
               />
@@ -218,16 +220,13 @@ const RegistroVehiculo: React.FC = () => {
                 placeholder="4"
                 fullWidth
                 size="small"
-                name="numeroCilindros"
+                name="cilindros"
                 onChange={handleChange}
-                value={values.numeroCilindros}
-                error={
-                  errors.numeroCilindros && touched.numeroCilindros
-                    ? true
-                    : false
-                }
+                onBlur={handleBlur}
+                value={values.cilindros}
+                error={errors.cilindros && touched.cilindros ? true : false}
               />
-              <ErrorMessage name="numeroCilindros">
+              <ErrorMessage name="cilindros">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
@@ -239,16 +238,13 @@ const RegistroVehiculo: React.FC = () => {
                 placeholder="4"
                 fullWidth
                 size="small"
-                name="numeroPasajeros"
+                name="pasajeros"
                 onChange={handleChange}
-                value={values.numeroPasajeros}
-                error={
-                  errors.numeroPasajeros && touched.numeroPasajeros
-                    ? true
-                    : false
-                }
+                onBlur={handleBlur}
+                value={values.pasajeros}
+                error={errors.pasajeros && touched.pasajeros ? true : false}
               />
-              <ErrorMessage name="numeroPasajeros">
+              <ErrorMessage name="pasajeros">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
@@ -261,22 +257,38 @@ const RegistroVehiculo: React.FC = () => {
                 placeholder="4"
                 fullWidth
                 size="small"
-                name="numeroPuertas"
+                name="puertas"
                 onChange={handleChange}
-                value={values.numeroPuertas}
-                error={
-                  errors.numeroPuertas && touched.numeroPuertas ? true : false
-                }
+                onBlur={handleBlur}
+                value={values.puertas}
+                error={errors.puertas && touched.puertas ? true : false}
               />
-              <ErrorMessage name="numeroPuertas">
+              <ErrorMessage name="puertas">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
             <Grid item xs={12} sm={3}>
-              <div className="inputReal">
-                <input type="file" multiple />
-                <div className="inputPerso">🏎️ Seleccione las imagenes</div>
-              </div>
+              <Field name="imagenes">
+                {({ field, form }: FieldProps<FormValues>) => (
+                  <div className="inputReal">
+                    <input
+                      type="file"
+                      accept=".jpg, .jpeg, .png, .gif, .webp "
+                      multiple
+                      onChange={(event) => {
+                        form.setFieldValue(
+                          field.name,
+                          event.currentTarget.files
+                        );
+                      }}
+                    />
+                    <div className="inputPerso">🏎️ Seleccione las imagenes</div>
+                  </div>
+                )}
+              </Field>
+              <ErrorMessage name="imagenes">
+                {(msg) => <MessageErr message={msg} />}
+              </ErrorMessage>
             </Grid>
 
             <Grid item xs={12}>
@@ -289,6 +301,7 @@ const RegistroVehiculo: React.FC = () => {
                 fullWidth
                 name="descripcion"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.descripcion}
                 error={errors.descripcion && touched.descripcion ? true : false}
               />
@@ -533,6 +546,7 @@ const RegistroVehiculo: React.FC = () => {
                 size="small"
                 name="precioHora"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.precioHora}
                 error={errors.precioHora && touched.precioHora ? true : false}
               />
@@ -550,6 +564,7 @@ const RegistroVehiculo: React.FC = () => {
                 size="small"
                 name="precioDia"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.precioDia}
                 error={errors.precioDia && touched.precioDia ? true : false}
               />
