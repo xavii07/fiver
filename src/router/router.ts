@@ -9,4 +9,6 @@ export const RUTAS_PRIVADAS = {
   USUARIOS: "/admin/usuarios",
   VEHICULOS: "/admin/vehiculos",
   REGISTRO_VEHICULO: "/admin/vehiculos/registro",
+  MARCAS: "/admin/marcas",
+  REGISTRO_MARCA: "/admin/marcas/registro",
 };

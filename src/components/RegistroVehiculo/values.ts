@@ -57,4 +57,13 @@ export const initialValues = {
   precioHora: "",
   precioDia: "",
   imagenes: null,
+  abs: false,
+  ac: false,
+  bluetooth: false,
+  gps: false,
+  airbag: false,
+  camaraReversa: false,
+  neblineros: false,
+  radio: false,
+  sonidoStereo: false,
 };

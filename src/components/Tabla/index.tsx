@@ -52,9 +52,7 @@ const TablaComponent: React.FC<PropsTabla> = ({
   const { pageSize, pageIndex } = table.getState().pagination;
 
   totalData === 0 && (
-    <p className="text-center fst-italic">
-      No se encontro ningun medico registrado :(
-    </p>
+    <p className="text-center fst-italic">No se encontro ningun resultado</p>
   );
 
   return (

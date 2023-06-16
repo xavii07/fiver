@@ -1,0 +1,11 @@
+.icon {
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer;
+}
+
+.icon:hover {
+  opacity: 0.7;
+  border: 1px solid #000 !important;
+  border-radius: 0.5rem;
+}

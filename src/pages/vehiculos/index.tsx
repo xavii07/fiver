@@ -1,13 +1,30 @@
 import { Container, Typography } from "@mui/material";
 import TablaComponent from "../../components/Tabla";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Stack } from "@mui/system";
 import { IconTrashX, IconPencilPlus, IconEyeEdit } from "@tabler/icons-react";
 import "./styles.css";
 import BotonComponent from "../../components/Boton";
 import { RUTAS_PRIVADAS } from "../../router/router";
+import { IVehiculo } from "../../interfaces/vehiculo";
+import { supabase } from "../../supabase/client";
 
 const VehiculosPage: React.FC = () => {
+  const [vehiculos, setVehiculos] = useState<IVehiculo[]>([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const { data, error } = await supabase.from("Vehiculo").select("*");
+      if (error) {
+        console.error("Error al obtener los elementos:", error.message);
+      } else {
+        setVehiculos(data);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
   const columns = useMemo(
     () => [
       {
@@ -97,14 +114,21 @@ const VehiculosPage: React.FC = () => {
           <Typography
             variant="body1"
             sx={{
-              background: "#34bf49",
               color: "#fff",
               fontSize: "0.7rem",
               textAlign: "center",
               padding: "0.2rem 0.5rem",
             }}
           >
-            {cell.getValue()}
+            {JSON.stringify(cell.getValue()) === "true" ? (
+              <span style={{ background: "green", padding: "0.4rem" }}>
+                Activo
+              </span>
+            ) : (
+              <span style={{ background: "red", padding: "0.4rem" }}>
+                Inactivo
+              </span>
+            )}
           </Typography>
         ),
       },
@@ -112,12 +136,16 @@ const VehiculosPage: React.FC = () => {
         id: "acciones",
         header: "Acciones",
         accessorKey: "acciones",
-        cell: () => (
+        cell: ({ row }: { row: any }) => (
           <Stack direction="row">
             <button className="bg-transparent icon" type="button">
               <IconPencilPlus size={18} color={"#7552cc"} />
             </button>
-            <button className="bg-transparent icon" type="button">
+            <button
+              className="bg-transparent icon"
+              type="button"
+              onClick={() => handleUpdateEstado(row.original.id)}
+            >
               <IconEyeEdit size={18} color={"#002754"} />
             </button>
             <button className="bg-transparent icon" type="button">
@@ -130,503 +158,42 @@ const VehiculosPage: React.FC = () => {
     []
   );
 
-  const data = useMemo(
-    () => [
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Chevrolet",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Verde",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        placa: "PAC9079",
-        marca: "Chevrolet",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "PAD1458",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-      {
-        imagen:
-          "https://m.atcdn.co.uk/vms/media/cd34eca0a92541ffb422525702adc2e4.jpg",
-        placa: "ABC123",
-        marca: "Toyota",
-        modelo: "Corolla",
-        color: "Rojo",
-        tipo: "Sedan",
-        anio: "2019",
-        estado: "Activo",
-        transmision: "Automatico",
-        precioHora: 20,
-        precioDia: 100,
-      },
-    ],
-    []
-  );
+  const data = useMemo(() => vehiculos, [vehiculos]);
 
   const totalData = useMemo(() => data.length, [data]);
+
+  const handleUpdateEstado = async (id: number) => {
+    try {
+      const { data: item, error } = await supabase
+        .from("Vehiculo")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error("Error al obtener el elemento:", error.message);
+        return;
+      }
+
+      const updatedStatus = !item.estado;
+      const { data, error: updateError } = await supabase
+        .from("Vehiculo")
+        .update({ estado: updatedStatus })
+        .eq("id", id);
+
+      if (updateError) {
+        console.error(
+          "Error al actualizar el campo de estado:",
+          updateError.message
+        );
+        return;
+      }
+
+      console.log("Campo de estado actualizado:", data);
+    } catch (error) {
+      console.error("Error al actualizar el campo de estado:");
+    }
+  };
 
   return (
     <Container

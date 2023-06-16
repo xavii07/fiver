@@ -1,7 +1,7 @@
 import { Container, Typography } from "@mui/material";
-import RegisterVehiculo from "../../components/RegistroVehiculo";
+import RegistroMarca from "../../components/RegistroMarca";
 
-const RegistroVehiculoPage: React.FC = () => {
+const RegistroMarcaPage: React.FC = () => {
   return (
     <Container
       sx={{
@@ -9,14 +9,15 @@ const RegistroVehiculoPage: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <Typography variant="h5" sx={{ textTransform: "uppercase" }}>
-        Registro del vehiculo
+        Registro de Marca
       </Typography>
-      <RegisterVehiculo />
+      <RegistroMarca />
     </Container>
   );
 };
 
-export default RegistroVehiculoPage;
+export default RegistroMarcaPage;

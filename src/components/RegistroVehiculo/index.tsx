@@ -13,20 +13,108 @@ import {
 } from "@mui/material";
 import "./styles.css";
 import { vehiculoValidation } from "../../utils/vehiculoValidation";
-import { initialValues, marcasVehiculos, tipoTransmision } from "./values";
+import { initialValues, tipoTransmision } from "./values";
 import MessageErr from "../MessageError";
+import { supabase } from "../../supabase/client";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { RUTAS_PRIVADAS } from "../../router/router";
 
 interface FormValues {
   files: FileList | null;
 }
+interface Marca {
+  id: number;
+  nombre: string;
+  imagen: string;
+}
 
 const RegistroVehiculo: React.FC = () => {
+  const [marcas, setMarcas] = useState<Marca[]>([]);
+
+  const navigation = useNavigate();
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const { data, error } = await supabase.from("Marca").select("*");
+      if (error) {
+        console.error("Error al obtener los elementos:", error.message);
+      } else {
+        setMarcas(data);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={vehiculoValidation}
-      onSubmit={(values) => {
+      onSubmit={async (values) => {
         console.log(values);
+        const { data, error } = await supabase.from("Vehiculo").insert([
+          {
+            placa: values.placa,
+            idMarca: values.marca,
+            modelo: values.modelo,
+            tipo: values.tipo,
+            anio: values.anio,
+            transmision: values.transmision,
+            combustible: values.combustible,
+            motorHp: values.motorHp,
+            cilindros: values.cilindros,
+            pasajeros: values.pasajeros,
+            puertas: values.puertas,
+            color: values.color,
+            descripcion: values.descripcion,
+            imagenes: values.imagenes,
+            abs: values.abs,
+            ac: values.ac,
+            bluetooth: values.bluetooth,
+            gps: values.gps,
+            airbag: values.airbag,
+            camaraReversa: values.camaraReversa,
+            neblineros: values.neblineros,
+            radio: values.radio,
+            sonidoStereo: values.sonidoStereo,
+            precioHora: values.precioHora,
+            precioDia: values.precioDia,
+          },
+        ]);
+
+        if (error) {
+          return toast.error("Error al registrar el vehiculo");
+        }
+
+        toast.success("Vehículo registrado correctamente");
+        (values.placa = ""),
+          (values.marca = ""),
+          (values.modelo = ""),
+          (values.tipo = ""),
+          (values.anio = ""),
+          (values.transmision = ""),
+          (values.combustible = ""),
+          (values.motorHp = ""),
+          (values.cilindros = ""),
+          (values.pasajeros = ""),
+          (values.puertas = ""),
+          (values.color = ""),
+          (values.descripcion = ""),
+          (values.imagenes = null),
+          (values.abs = false),
+          (values.ac = false),
+          (values.bluetooth = false),
+          (values.gps = false),
+          (values.airbag = false),
+          (values.camaraReversa = false),
+          (values.neblineros = false),
+          (values.radio = false),
+          (values.sonidoStereo = false),
+          (values.precioHora = ""),
+          (values.precioDia = ""),
+          navigation(RUTAS_PRIVADAS.VEHICULOS);
       }}
     >
       {({ errors, touched, values, handleChange, handleBlur }) => (
@@ -73,10 +161,12 @@ const RegistroVehiculo: React.FC = () => {
                 onBlur={handleBlur}
                 value={values.marca}
                 fullWidth
-                defaultValue={marcasVehiculos[0].nombre}
               >
-                {marcasVehiculos.map((marca) => (
-                  <MenuItem key={marca.id} value={marca.nombre}>
+                <MenuItem value="" defaultChecked>
+                  --Seleccione una marca--
+                </MenuItem>
+                {marcas.map((marca) => (
+                  <MenuItem key={marca.id} value={marca.id}>
                     {marca.nombre}
                   </MenuItem>
                 ))}
@@ -328,16 +418,19 @@ const RegistroVehiculo: React.FC = () => {
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="abs"
                   defaultValue="false"
+                  onChange={handleChange}
                 >
                   <FormControlLabel
                     value="true"
                     control={<Radio />}
                     label="Si"
+                    name="abs"
                   />
                   <FormControlLabel
                     value="false"
                     control={<Radio />}
                     label="No"
+                    name="abs"
                   />
                 </RadioGroup>
               </FormControl>
