@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/login";
 import HomePage from "./pages/home";
 import RouterLayout from "./components/RouterLayout";
@@ -10,24 +10,22 @@ import RegistroMarcaPage from "./pages/registroMarca";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={RUTAS_PUBLICAS.HOME} element={<RouterLayout />}>
-          <Route path={RUTAS_PUBLICAS.HOME} element={<HomePage />} />
-          <Route
-            path={RUTAS_PRIVADAS.REGISTRO_VEHICULO}
-            element={<RegistroVehiculoPage />}
-          />
-          <Route path={RUTAS_PRIVADAS.VEHICULOS} element={<VehiculosPage />} />
-          <Route path={RUTAS_PRIVADAS.MARCAS} element={<MarcasPage />} />
-          <Route
-            path={RUTAS_PRIVADAS.REGISTRO_MARCA}
-            element={<RegistroMarcaPage />}
-          />
-        </Route>
-        <Route path={RUTAS_PUBLICAS.LOGIN} element={<LoginPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path={RUTAS_PUBLICAS.HOME} element={<RouterLayout />}>
+        <Route path={RUTAS_PUBLICAS.HOME} element={<HomePage />} />
+        <Route
+          path={RUTAS_PRIVADAS.REGISTRO_VEHICULO}
+          element={<RegistroVehiculoPage />}
+        />
+        <Route path={RUTAS_PRIVADAS.VEHICULOS} element={<VehiculosPage />} />
+        <Route path={RUTAS_PRIVADAS.MARCAS} element={<MarcasPage />} />
+        <Route
+          path={RUTAS_PRIVADAS.REGISTRO_MARCA}
+          element={<RegistroMarcaPage />}
+        />
+      </Route>
+      <Route path={RUTAS_PUBLICAS.LOGIN} element={<LoginPage />} />
+    </Routes>
   );
 }
 

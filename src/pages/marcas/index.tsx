@@ -1,33 +1,19 @@
 import { Container, Typography } from "@mui/material";
 import TablaComponent from "../../components/Tabla";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Stack } from "@mui/system";
-import { IconTrashX, IconPencilPlus, IconEyeEdit } from "@tabler/icons-react";
+import { IconPencilPlus } from "@tabler/icons-react";
 import "./styles.css";
 import BotonComponent from "../../components/Boton";
 import { RUTAS_PRIVADAS } from "../../router/router";
-import { supabase } from "../../supabase/client";
-
-interface Marca {
-  id: number;
-  nombre: string;
-  imagen: string;
-}
+import { useMarcas } from "../../context/MarcaContext";
 
 const MarcasPage: React.FC = () => {
-  const [marcas, setMarcas] = useState<Marca[]>([]);
+  const { marcas, getMarcas } = useMarcas();
 
   useEffect(() => {
-    const fetchItems = async () => {
-      const { data, error } = await supabase.from("Marca").select("*");
-      if (error) {
-        console.error("Error al obtener los elementos:", error.message);
-      } else {
-        setMarcas(data);
-      }
-    };
-
-    fetchItems();
+    getMarcas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = useMemo(

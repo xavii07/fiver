@@ -69,7 +69,6 @@ const RegistroVehiculo: React.FC = () => {
             puertas: values.puertas,
             color: values.color,
             descripcion: values.descripcion,
-            imagenes: values.imagenes,
             abs: values.abs,
             ac: values.ac,
             bluetooth: values.bluetooth,
@@ -85,7 +84,7 @@ const RegistroVehiculo: React.FC = () => {
         ]);
 
         if (error) {
-          return toast.error("Error al registrar el vehiculo");
+          return toast.error("Error al registrar el vehículo");
         }
 
         toast.success("Vehículo registrado correctamente");
@@ -129,7 +128,7 @@ const RegistroVehiculo: React.FC = () => {
               variant="body1"
               sx={{ mt: 1, mb: 1.5, textDecoration: "underline" }}
             >
-              Datos de Vehiculo
+              Datos de Vehículo
             </Typography>
           </Grid>
           <Grid container spacing={2}>
@@ -192,9 +191,9 @@ const RegistroVehiculo: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Tipo de vehiculo"
+                label="Tipo de vehículo"
                 variant="outlined"
-                placeholder="Automovil"
+                placeholder="Automóvil"
                 fullWidth
                 size="small"
                 name="tipo"
@@ -209,7 +208,7 @@ const RegistroVehiculo: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Anio de fabricacion"
+                label="Anio de fabricación"
                 variant="outlined"
                 type="number"
                 placeholder="2021"
@@ -246,7 +245,7 @@ const RegistroVehiculo: React.FC = () => {
             <Grid item xs={12} sm={3}>
               <TextField
                 select
-                label="Tipo de transmision"
+                label="Tipo de transmisión"
                 size="small"
                 fullWidth
                 defaultValue={tipoTransmision[0].values}
@@ -385,7 +384,7 @@ const RegistroVehiculo: React.FC = () => {
               <TextField
                 label="Descripcion"
                 variant="outlined"
-                placeholder="Vehiculo de lujo de la marca Lamborghini"
+                placeholder="Vehículo de lujo de la marca Lamborghini"
                 autoComplete="off"
                 size="small"
                 fullWidth
@@ -405,7 +404,7 @@ const RegistroVehiculo: React.FC = () => {
                 variant="body1"
                 sx={{ mt: 1, mb: 1, textDecoration: "underline" }}
               >
-                Caracteristicas Adicionales
+                Características Adicionales
               </Typography>
             </Grid>
 
@@ -530,7 +529,7 @@ const RegistroVehiculo: React.FC = () => {
             <Grid item xs={6} sm={2}>
               <FormControl sx={{ display: "flex", justifyContent: "center" }}>
                 <FormLabel id="reversa" sx={{ textAlign: "center" }}>
-                  Camara de reversa
+                  Cámara de reversa
                 </FormLabel>
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
@@ -675,7 +674,7 @@ const RegistroVehiculo: React.FC = () => {
                 size="large"
                 color="primary"
               >
-                Registrar vehiculo
+                Registrar vehículo
               </Button>
             </Grid>
           </Grid>

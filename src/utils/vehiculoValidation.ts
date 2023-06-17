@@ -11,27 +11,27 @@ export const vehiculoValidation = yup.object().shape({
   modelo: yup
     .string()
     .required("El modelo es requerido")
-    .max(100, "El maximo de caracteres es 100"),
-  tipo: yup.string().required("El tipo de vehiculo es requerido"),
+    .max(100, "El máximo de caracteres es 100"),
+  tipo: yup.string().required("El tipo de vehículo es requerido"),
   anio: yup
     .string()
     .required("El motor es requerido")
-    .max(4, "El maximo de caracteres es 4")
-    .min(4, "El minimo de caracteres es 4"),
+    .max(4, "El máximo de caracteres es 4")
+    .min(4, "El mínimo de caracteres es 4"),
   color: yup
     .string()
     .required("El color es requerido")
-    .max(15, "El maximo de caracteres es 15"),
-  transmision: yup.string().required("El tipo de transmision es requerido"),
+    .max(15, "El máximo de caracteres es 15"),
+  transmision: yup.string().required("El tipo de transmisión es requerido"),
   combustible: yup
     .string()
     .required("El tipo de combustible es requerido")
-    .max(30, "El maximo de caracteres es 30"),
+    .max(30, "El máximo de caracteres es 30"),
   motorHp: yup
     .string()
     .required("El motor es requerido")
-    .max(4, "El maximo de caracteres es 4")
-    .min(4, "El minimo de caracteres es 4"),
+    .max(4, "El máximo de caracteres es 4")
+    .min(4, "El mínimo de caracteres es 4"),
   cilindros: yup.string().required("El cilindraje es requerido"),
   pasajeros: yup
     .number()
@@ -49,8 +49,8 @@ export const vehiculoValidation = yup.object().shape({
     .max(5, "El numero de puertas debe ser menor o igual a 5"),
   descripcion: yup
     .string()
-    .required("La descripcion es requerida")
-    .max(500, "El maximo de caracteres es 500"),
+    .required("La descripción es requerida")
+    .max(500, "El máximo de caracteres es 500"),
   precioHora: yup
     .number()
     .positive("El precio por hora debe ser positivo")

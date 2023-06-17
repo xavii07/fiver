@@ -4,7 +4,7 @@ export const marcaValidation = yup.object().shape({
   nombre: yup
     .string()
     .required("El nombre es requerida")
-    .max(500, "El maximo de caracteres es 500"),
+    .max(500, "El máximo de caracteres es 500"),
 
   imagen: yup
     .mixed()

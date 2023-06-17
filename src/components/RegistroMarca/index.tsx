@@ -3,35 +3,21 @@ import { Grid, TextField, Button } from "@mui/material";
 import { initialValues } from "./values";
 import MessageErr from "../MessageError";
 import { marcaValidation } from "../../utils/marcaValidation";
-import { supabase } from "../../supabase/client";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-import { RUTAS_PRIVADAS } from "../../router/router";
+import { useMarcas } from "../../context/MarcaContext";
 
 interface FormValues {
   files: FileList | null;
 }
 
 const RegistroMarca: React.FC = () => {
-  const navigation = useNavigate();
+  const { createMarca } = useMarcas();
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={marcaValidation}
       onSubmit={async (values) => {
-        console.log(values);
-        const { error } = await supabase.from("Marca").insert({
-          nombre: values.nombre,
-        });
-
-        if (error) {
-          return toast.error("Error al registrar la marca");
-        }
-
-        toast.success("Marca registrada correctamente");
-        values.nombre = "";
-        navigation(RUTAS_PRIVADAS.MARCAS);
+        createMarca(values.nombre);
       }}
     >
       {({ errors, touched, values, handleChange, handleBlur }) => (

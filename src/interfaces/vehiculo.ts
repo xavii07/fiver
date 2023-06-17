@@ -1,5 +1,5 @@
 export interface IVehiculo {
-  id: string;
+  id?: string;
   placa: string;
   modelo: string;
   tipo: string;

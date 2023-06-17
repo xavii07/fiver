@@ -1,36 +1,28 @@
 import { Container, Typography } from "@mui/material";
 import TablaComponent from "../../components/Tabla";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Stack } from "@mui/system";
 import { IconTrashX, IconPencilPlus, IconEyeEdit } from "@tabler/icons-react";
 import "./styles.css";
 import BotonComponent from "../../components/Boton";
 import { RUTAS_PRIVADAS } from "../../router/router";
-import { IVehiculo } from "../../interfaces/vehiculo";
 import { supabase } from "../../supabase/client";
+import { useVehiculos } from "../../context/VehiculoContext";
 
 const VehiculosPage: React.FC = () => {
-  const [vehiculos, setVehiculos] = useState<IVehiculo[]>([]);
+  const { vehiculos, getVehiculos } = useVehiculos();
 
   useEffect(() => {
-    const fetchItems = async () => {
-      const { data, error } = await supabase.from("Vehiculo").select("*");
-      if (error) {
-        console.error("Error al obtener los elementos:", error.message);
-      } else {
-        setVehiculos(data);
-      }
-    };
-
-    fetchItems();
+    getVehiculos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = useMemo(
     () => [
       {
-        id: "imagen",
+        id: "imagenes",
         header: "Imagen",
-        accessorKey: "imagen",
+        accessorKey: "imagenes",
         cell: ({
           cell,
         }: {
@@ -58,7 +50,7 @@ const VehiculosPage: React.FC = () => {
       },
       {
         id: "transmision",
-        header: "Transmision",
+        header: "Trasmisión",
         accessorKey: "transmision",
       },
       {
@@ -90,7 +82,7 @@ const VehiculosPage: React.FC = () => {
       },
       {
         id: "precioDia",
-        header: "$ Dia",
+        header: "$ Día",
         accessorKey: "precioDia",
         cell: ({
           cell,

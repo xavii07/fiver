@@ -12,7 +12,7 @@ const RegistroVehiculoPage: React.FC = () => {
       }}
     >
       <Typography variant="h5" sx={{ textTransform: "uppercase" }}>
-        Registro del vehiculo
+        Registro del vehículo
       </Typography>
       <RegisterVehiculo />
     </Container>
