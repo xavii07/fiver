@@ -8,6 +8,7 @@ import BotonComponent from "../../components/Boton";
 import { RUTAS_PRIVADAS } from "../../router/router";
 import { supabase } from "../../supabase/client";
 import { useVehiculos } from "../../context/VehiculoContext";
+import Loader from "../../components/Loader";
 
 const VehiculosPage: React.FC = () => {
   const { vehiculos, getVehiculos } = useVehiculos();
@@ -196,7 +197,10 @@ const VehiculosPage: React.FC = () => {
         alignItems: "center",
       }}
     >
-      <Typography variant="h5" sx={{ textTransform: "uppercase" }}>
+      <Typography
+        variant="h5"
+        sx={{ textTransform: "uppercase", marginTop: "2rem" }}
+      >
         Vehiculos fiver
       </Typography>
       <TablaComponent

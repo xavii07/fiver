@@ -1,7 +1,10 @@
 import { Container, Typography } from "@mui/material";
 import RegistroMarca from "../../components/RegistroMarca";
+import { useMarcas } from "../../hooks/useMarcas";
 
 const RegistroMarcaPage: React.FC = () => {
+  const { editmarca } = useMarcas();
+
   return (
     <Container
       sx={{
@@ -13,7 +16,9 @@ const RegistroMarcaPage: React.FC = () => {
       }}
     >
       <Typography variant="h5" sx={{ textTransform: "uppercase" }}>
-        Registro de Marca
+        {Object.keys(editmarca).length !== 0
+          ? "Editar marca"
+          : "Registro de Marca"}
       </Typography>
       <RegistroMarca />
     </Container>

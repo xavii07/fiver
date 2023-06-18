@@ -54,7 +54,7 @@ const RegistroVehiculo: React.FC = () => {
       validationSchema={vehiculoValidation}
       onSubmit={async (values) => {
         console.log(values);
-        const { data, error } = await supabase.from("Vehiculo").insert([
+        const { error } = await supabase.from("Vehiculo").insert([
           {
             placa: values.placa,
             idMarca: values.marca,

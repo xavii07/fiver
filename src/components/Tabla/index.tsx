@@ -51,10 +51,6 @@ const TablaComponent: React.FC<PropsTabla> = ({
 
   const { pageSize, pageIndex } = table.getState().pagination;
 
-  totalData === 0 && (
-    <p className="text-center fst-italic">No se encontro ningun resultado</p>
-  );
-
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ display: "flex", gap: "0.5rem" }}>

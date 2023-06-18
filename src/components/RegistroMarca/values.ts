@@ -1,4 +1,7 @@
-export const initialValues = {
+import { IFormValueMarca } from "../../interfaces/formValueMarca";
+
+export const initialValues: IFormValueMarca = {
   nombre: "",
-  imagen: "",
+  imagen: null,
+  codigo: "",
 };

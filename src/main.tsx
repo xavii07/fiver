@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <BrowserRouter>
       <VehiculoProvider>
         <MarcaProvider>
-          <Toaster position="top-center" />
+          <Toaster position="top-center" richColors />
           <ThemeConfig>
             <App />
           </ThemeConfig>

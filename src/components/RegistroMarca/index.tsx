@@ -1,24 +1,67 @@
 import { Formik, Form, ErrorMessage, Field, FieldProps } from "formik";
 import { Grid, TextField, Button } from "@mui/material";
-import { initialValues } from "./values";
+import { useMarcas } from "../../hooks/useMarcas";
+import { IFormValueMarca } from "../../interfaces/formValueMarca";
 import MessageErr from "../MessageError";
-import { marcaValidation } from "../../utils/marcaValidation";
-import { useMarcas } from "../../context/MarcaContext";
 
-interface FormValues {
-  files: FileList | null;
-}
+import { marcaValidation } from "../../utils/marcaValidation";
+import { initialValues } from "./values";
+import "./styles.css";
+import { useEffect } from "react";
+import { IMarca } from "../../interfaces/marca";
 
 const RegistroMarca: React.FC = () => {
-  const { createMarca } = useMarcas();
+  const { createMarca, subirImagen, editmarca, updateMarca, setEditMarca } =
+    useMarcas();
+
+  useEffect(() => {
+    if (Object.keys(editmarca).length !== 0) {
+      initialValues.codigo = editmarca.codigo;
+      initialValues.nombre = editmarca.nombre;
+    } else {
+      initialValues.codigo = "";
+      initialValues.nombre = "";
+    }
+  }, [editmarca]);
+
+  const handleSubmit = async (values: IFormValueMarca) => {
+    if (Object.keys(editmarca).length !== 0) {
+      if (
+        values.imagen &&
+        values.imagen.length !== undefined &&
+        values.imagen.length > 0
+      ) {
+        const data = await subirImagen(values.imagen[0]);
+        const imagenUrl = `${import.meta.env.VITE_URL_IMAGEN}${data.path}`;
+        updateMarca({
+          id: editmarca?.id,
+          codigo: values.codigo,
+          nombre: values.nombre,
+          imagen: imagenUrl,
+        });
+        setEditMarca({} as IMarca);
+      }
+    } else {
+      if (
+        values.imagen &&
+        values.imagen.length !== undefined &&
+        values.imagen.length > 0
+      ) {
+        const data = await subirImagen(values.imagen[0]);
+        const imagenUrl = `${import.meta.env.VITE_URL_IMAGEN}${data.path}`;
+        createMarca(values.nombre, values.codigo, imagenUrl);
+      }
+    }
+  };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={marcaValidation}
-      onSubmit={async (values) => {
-        createMarca(values.nombre);
-      }}
+      onSubmit={handleSubmit}
+      validateOnBlur={true}
+      enableReinitialize={true}
+      context={{}}
     >
       {({ errors, touched, values, handleChange, handleBlur }) => (
         <Form
@@ -29,7 +72,25 @@ const RegistroMarca: React.FC = () => {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                label="Codigo"
+                value={values.codigo}
+                name="codigo"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                variant="outlined"
+                placeholder="CHEVFIVER"
+                autoComplete="off"
+                size="small"
+                fullWidth
+                error={errors.codigo && touched.codigo ? true : false}
+              />
+              <ErrorMessage name="codigo">
+                {(msg) => <MessageErr message={msg} />}
+              </ErrorMessage>
+            </Grid>
+            <Grid item xs={12} sm={4}>
               <TextField
                 label="Marca"
                 value={values.nombre}
@@ -48,14 +109,13 @@ const RegistroMarca: React.FC = () => {
               </ErrorMessage>
             </Grid>
 
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <Field name="imagen">
-                {({ field, form }: FieldProps<FormValues>) => (
+                {({ field, form }: FieldProps<IFormValueMarca>) => (
                   <div className="inputReal">
                     <input
                       type="file"
                       accept=".jpg, .jpeg, .png, .gif, .webp "
-                      multiple
                       onChange={(event) => {
                         form.setFieldValue(
                           field.name,
@@ -72,7 +132,21 @@ const RegistroMarca: React.FC = () => {
               </ErrorMessage>
             </Grid>
 
-            <Grid item xs={12} sm={6}>
+            {Object.keys(editmarca).length !== 0 ? (
+              <Grid item xs={12} sm={12}>
+                <p>Imagen actual</p>
+                <div>
+                  <img
+                    src={editmarca.imagen}
+                    alt="imagen"
+                    width={150}
+                    height={130}
+                  />
+                </div>
+              </Grid>
+            ) : null}
+
+            <Grid item xs={12} sm={4}>
               <Button
                 type="submit"
                 fullWidth
@@ -80,7 +154,9 @@ const RegistroMarca: React.FC = () => {
                 size="large"
                 color="primary"
               >
-                Registrar marca
+                {Object.keys(editmarca).length !== 0
+                  ? "Editar marca"
+                  : "Registrar marca"}
               </Button>
             </Grid>
           </Grid>
