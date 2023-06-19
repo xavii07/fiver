@@ -1,5 +1,5 @@
 export interface IVehiculo {
-  id?: string;
+  id?: number | null;
   placa: string;
   modelo: string;
   tipo: string;
@@ -8,11 +8,11 @@ export interface IVehiculo {
   transmision: string;
   combustible: string;
   motorHp: string;
-  cilindros: number;
-  pasajeros: number;
-  puertas: number;
+  cilindros: number | null;
+  pasajeros: number | null;
+  puertas: number | null;
   descripcion: string;
-  imagenes: string[];
+  imagenes: string[] | File[] | null;
   abs: boolean;
   ac: boolean;
   bluetooth: boolean;
@@ -22,7 +22,8 @@ export interface IVehiculo {
   neblineros: boolean;
   radio: boolean;
   sonidoStereo: boolean;
-  precioHora: number;
-  precioDia: number;
-  idMarca: string;
+  precioHora: number | null;
+  precioDia: number | null;
+  estado?: boolean;
+  idMarca: number | null;
 }

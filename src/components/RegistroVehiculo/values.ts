@@ -1,21 +1,4 @@
-export const marcasVehiculos = [
-  {
-    id: 1,
-    nombre: "Chevrolet",
-    imagen:
-      "https://www.chevrolet.com.co/content/dam/chevrolet/na/campaigns/01-images/2021/chevrolet/chevrolet-camino/chevrolet-camino-2021-01.jpg?imwidth=960",
-  },
-  {
-    id: 2,
-    nombre: "Toyota",
-    imagen: "https://www.toyota.com.co/themes/custom/toyota/images/logo.png",
-  },
-  {
-    id: 3,
-    nombre: "Mazda",
-    imagen: "https://www.mazda.com.co/themes/custom/mazda/images/logo.png",
-  },
-];
+import { IVehiculo } from "../../interfaces/vehiculo";
 
 export const tipoTransmision = [
   {
@@ -40,9 +23,9 @@ export const tipoTransmision = [
   },
 ];
 
-export const initialValues = {
+export const initialValues: IVehiculo = {
   placa: "",
-  marca: "",
+  idMarca: null,
   modelo: "",
   tipo: "",
   anio: "",
@@ -50,12 +33,12 @@ export const initialValues = {
   transmision: "",
   combustible: "",
   motorHp: "",
-  cilindros: "",
-  pasajeros: "",
+  cilindros: null,
+  pasajeros: null,
   descripcion: "",
-  puertas: "",
-  precioHora: "",
-  precioDia: "",
+  puertas: null,
+  precioHora: null,
+  precioDia: null,
   imagenes: null,
   abs: false,
   ac: false,

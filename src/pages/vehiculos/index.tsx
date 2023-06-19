@@ -1,22 +1,46 @@
-import { Container, Typography } from "@mui/material";
-import TablaComponent from "../../components/Tabla";
-import { useEffect, useMemo } from "react";
 import { Stack } from "@mui/system";
-import { IconTrashX, IconPencilPlus, IconEyeEdit } from "@tabler/icons-react";
-import "./styles.css";
+import { Container, Typography } from "@mui/material";
+import { useCallback, useEffect, useMemo } from "react";
+import { IconPencilPlus, IconEyeEdit } from "@tabler/icons-react";
+
 import BotonComponent from "../../components/Boton";
 import { RUTAS_PRIVADAS } from "../../router/router";
-import { supabase } from "../../supabase/client";
-import { useVehiculos } from "../../context/VehiculoContext";
+import { useVehiculos } from "../../hooks/useVehiculos";
 import Loader from "../../components/Loader";
+import TablaComponent from "../../components/Tabla";
+import { useNavigate } from "react-router-dom";
+import "./styles.css";
 
 const VehiculosPage: React.FC = () => {
-  const { vehiculos, getVehiculos } = useVehiculos();
+  const {
+    vehiculos,
+    isloading,
+    getVehiculos,
+    updateEstadoVehiculo,
+    getVehiculoById,
+  } = useVehiculos();
+
+  console.log({ vehiculos });
+  const navigate = useNavigate();
+
+  const memorizedGetMarcas = useCallback(() => {
+    getVehiculos();
+  }, [getVehiculos]);
 
   useEffect(() => {
-    getVehiculos();
+    memorizedGetMarcas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleUpdateEstado = async (id: number, estado: boolean) => {
+    await updateEstadoVehiculo(id, estado);
+  };
+
+  const handleUpdateVehiculo = async (id: number) => {
+    const vehiculo = await getVehiculoById(id);
+    console.log({ vehiculo });
+    navigate(`${RUTAS_PRIVADAS.REGISTRO_VEHICULO}`);
+  };
 
   const columns = useMemo(
     () => [
@@ -30,9 +54,15 @@ const VehiculosPage: React.FC = () => {
           cell: {
             getValue: () => string;
           };
-        }) => (
-          <img src={cell?.getValue()} alt="imagen" width={50} height={30} />
-        ),
+        }) => {
+          const imagenes = cell?.getValue();
+          const primeraImagen =
+            imagenes && imagenes.length > 0 ? imagenes[0] : null;
+
+          return primeraImagen ? (
+            <img src={primeraImagen} alt="Vehiculo" width={50} height={30} />
+          ) : null;
+        },
       },
       {
         id: "placa",
@@ -42,7 +72,7 @@ const VehiculosPage: React.FC = () => {
       {
         id: "marca",
         header: "Marca",
-        accessorKey: "marca",
+        accessorKey: "Marca.nombre",
       },
       {
         id: "modelo",
@@ -131,62 +161,33 @@ const VehiculosPage: React.FC = () => {
         accessorKey: "acciones",
         cell: ({ row }: { row: any }) => (
           <Stack direction="row">
-            <button className="bg-transparent icon" type="button">
+            <button
+              className="bg-transparent icon"
+              type="button"
+              onClick={() => handleUpdateVehiculo(row.original.id)}
+            >
               <IconPencilPlus size={18} color={"#7552cc"} />
             </button>
             <button
               className="bg-transparent icon"
               type="button"
-              onClick={() => handleUpdateEstado(row.original.id)}
+              onClick={() =>
+                handleUpdateEstado(row.original.id, row.original.estado)
+              }
             >
               <IconEyeEdit size={18} color={"#002754"} />
-            </button>
-            <button className="bg-transparent icon" type="button">
-              <IconTrashX size={18} color={"#f82a53"} />
             </button>
           </Stack>
         ),
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   const data = useMemo(() => vehiculos, [vehiculos]);
 
   const totalData = useMemo(() => data.length, [data]);
-
-  const handleUpdateEstado = async (id: number) => {
-    try {
-      const { data: item, error } = await supabase
-        .from("Vehiculo")
-        .select("*")
-        .eq("id", id)
-        .single();
-
-      if (error) {
-        console.error("Error al obtener el elemento:", error.message);
-        return;
-      }
-
-      const updatedStatus = !item.estado;
-      const { data, error: updateError } = await supabase
-        .from("Vehiculo")
-        .update({ estado: updatedStatus })
-        .eq("id", id);
-
-      if (updateError) {
-        console.error(
-          "Error al actualizar el campo de estado:",
-          updateError.message
-        );
-        return;
-      }
-
-      console.log("Campo de estado actualizado:", data);
-    } catch (error) {
-      console.error("Error al actualizar el campo de estado:");
-    }
-  };
 
   return (
     <Container
@@ -203,18 +204,26 @@ const VehiculosPage: React.FC = () => {
       >
         Vehiculos fiver
       </Typography>
-      <TablaComponent
-        columns={columns}
-        data={data}
-        totalData={totalData}
-        nombre="Vehiculos"
-      />
-      <div style={{ width: "100%", marginTop: "2rem", paddingBottom: "4rem" }}>
-        <BotonComponent
-          titulo="Agregar vehiculo"
-          to={`${RUTAS_PRIVADAS.REGISTRO_VEHICULO}`}
-        />
-      </div>
+      {isloading ? (
+        <Loader />
+      ) : (
+        <>
+          <TablaComponent
+            columns={columns}
+            data={data}
+            totalData={totalData}
+            nombre="Vehiculos"
+          />
+          <div
+            style={{ width: "100%", marginTop: "2rem", paddingBottom: "4rem" }}
+          >
+            <BotonComponent
+              titulo="Agregar vehiculo"
+              to={`${RUTAS_PRIVADAS.REGISTRO_VEHICULO}`}
+            />
+          </div>
+        </>
+      )}
     </Container>
   );
 };

@@ -7,7 +7,7 @@ export const vehiculoValidation = yup.object().shape({
     .matches(/^[A-Z]{3}[\d]{4}/, "La placa debe tener el formato ABC1234")
     .min(7, "La placa debe tener 7 caracteres")
     .max(7, "La placa debe tener 7 caracteres"),
-  marca: yup.string().required("La marca es requerida"),
+  idMarca: yup.string().required("La marca es requerida"),
   modelo: yup
     .string()
     .required("El modelo es requerido")
@@ -30,9 +30,14 @@ export const vehiculoValidation = yup.object().shape({
   motorHp: yup
     .string()
     .required("El motor es requerido")
-    .max(4, "El máximo de caracteres es 4")
-    .min(4, "El mínimo de caracteres es 4"),
-  cilindros: yup.string().required("El cilindraje es requerido"),
+    .max(5, "El máximo de caracteres es 5")
+    .min(2, "El mínimo de caracteres es 2"),
+  cilindros: yup
+    .number()
+    .typeError("El numero de pasajeros tiene que ser numérico")
+    .required("El numero de pasajeros es requerido")
+    .positive("El numero de pasajeros debe ser positivo")
+    .integer("El numero de pasajeros debe ser un numero entero"),
   pasajeros: yup
     .number()
     .typeError("El numero de pasajeros tiene que ser numérico")
@@ -63,6 +68,7 @@ export const vehiculoValidation = yup.object().shape({
     .required("El precio por dia es requerido"),
   imagenes: yup
     .mixed()
+    .required("Las imagenes son requeridas")
     .test("fileSize", "El tamaño del archivo es demasiado grande", (value) => {
       if (!value) return true;
       const maxSize = 5 * 1024 * 1024; // 5MB

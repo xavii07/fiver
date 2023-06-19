@@ -1,90 +1,227 @@
-import { createContext, useContext, useState } from "react";
-import { supabase } from "../supabase/client";
+import { createContext, useState } from "react";
+import { customizeErrorMessages, supabase } from "../supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { RUTAS_PRIVADAS } from "../router/router";
 import { IVehiculo } from "../interfaces/vehiculo";
 
-interface VehiculoContextProps {
+interface VehiculoProviderProps {
+  children: React.ReactNode;
+}
+
+export interface VehiculoContextProps {
+  isloading: boolean;
   vehiculos: IVehiculo[];
   getVehiculos: () => Promise<void>;
-  createVehiculo: (nombre: string) => Promise<void>;
+  createVehiculo: (vehiculo: IVehiculo) => Promise<void>;
+  updateEstadoVehiculo: (id: number, estado: boolean) => Promise<void>;
+  getVehiculoById: (id: number) => Promise<IVehiculo | undefined>;
+  updateVehiculo: (vehiculo: IVehiculo) => Promise<void>;
+  subirImagenes: (images: File[], placa: string) => Promise<string[]>;
 }
+
 export const VehiculoContext = createContext<VehiculoContextProps>({
   vehiculos: [],
+  isloading: false,
   getVehiculos: async () => {
     throw new Error("El contexto de marcas debe estar dentro del proveedor");
   },
   createVehiculo: async () => {
     throw new Error("El contexto de marcas debe estar dentro del proveedor");
   },
+  updateEstadoVehiculo: async () => {
+    throw new Error("El contexto de marcas debe estar dentro del proveedor");
+  },
+  getVehiculoById: async () => {
+    throw new Error("El contexto de marcas debe estar dentro del proveedor");
+  },
+  updateVehiculo: async () => {
+    throw new Error("El contexto de marcas debe estar dentro del proveedor");
+  },
+  subirImagenes: async () => {
+    throw new Error("El contexto de marcas debe estar dentro del proveedor");
+  },
 });
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const useVehiculos = () => {
-  const context = useContext(VehiculoContext);
-  if (!context)
-    throw new Error("El contexto de vehiculos debe estar dentro del proveedor");
-  return context;
-};
-
-interface VehiculoProviderProps {
-  children: React.ReactNode;
-}
 
 export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
   children,
 }) => {
   const [vehiculos, setVehiculos] = useState<IVehiculo[]>([]);
+  const [isloading, setIsloading] = useState<boolean>(false);
   const navigation = useNavigate();
 
-  const getVehiculos = async () => {
-    const { error, data } = await supabase.from("Vehiculo").select();
-    if (error) return toast.error("Error al obtener las marcas");
-    setVehiculos(data);
-  };
+  const subirImagenes = async (
+    images: File[],
+    placa: string
+  ): Promise<string[]> => {
+    const imagesUrls: string[] = [];
 
-  const createVehiculo = async (vehiculo: IVehiculo) => {
-    console.log(vehiculo);
-    const { error, data } = await supabase.from("Vehiculo").insert({
-      placa: vehiculo.placa,
-      modelo: vehiculo.modelo,
-      tipo: vehiculo.tipo,
-      anio: vehiculo.anio,
-      color: vehiculo.color,
-      transmision: vehiculo.transmision,
-      combustible: vehiculo.combustible,
-      motorHp: vehiculo.motorHp,
-      cilindros: vehiculo.cilindros,
-      pasajeros: vehiculo.pasajeros,
-      puertas: vehiculo.puertas,
-      descripcion: vehiculo.descripcion,
-      abs: vehiculo.abs,
-      ac: vehiculo.ac,
-      bluetooth: vehiculo.bluetooth,
-      gps: vehiculo.gps,
-      airbag: vehiculo.airbag,
-      camaraReversa: vehiculo.camaraReversa,
-      neblineros: vehiculo.neblineros,
-      radio: vehiculo.radio,
-      sonidoStereo: vehiculo.sonidoStereo,
-      precioHora: vehiculo.precioHora,
-      precioDia: vehiculo.precioDia,
-    });
+    for (const image of images) {
+      const { data, error } = await supabase.storage
+        .from("fiver")
+        .upload(`vehiculos/${placa}/${image.name}`, image);
 
-    if (error) {
-      return toast.error("Error al registrar el vehiculo");
+      if (error) {
+        console.log(error);
+        throw error;
+      } else {
+        imagesUrls.push(`${import.meta.env.VITE_URL_IMAGEN}${data.path}`);
+      }
     }
 
-    setVehiculos((prev) => [...prev]);
+    return imagesUrls;
+  };
 
-    toast.success("Vehiculo registrada correctamente");
-    navigation(RUTAS_PRIVADAS.VEHICULOS);
+  const getVehiculos = async (): Promise<void> => {
+    setIsloading(true);
+    try {
+      const { error, data } = await supabase
+        .from("Vehiculo")
+        .select("*, Marca(nombre)");
+
+      if (error) {
+        throw error;
+      }
+      setVehiculos(data as IVehiculo[]);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al obtener los vehiculos");
+    } finally {
+      setIsloading(false);
+    }
+  };
+
+  const createVehiculo = async (vehiculo: IVehiculo): Promise<void> => {
+    console.log(vehiculo);
+    try {
+      const { error, data } = await supabase.from("Vehiculo").insert({
+        ...vehiculo,
+      });
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
+
+      if (data) {
+        setVehiculos([...vehiculos, ...data]);
+      }
+      console.log(data);
+
+      toast.success("Vehiculo registrada correctamente");
+      navigation(RUTAS_PRIVADAS.VEHICULOS);
+    } catch (error: unknown) {
+      console.log(error);
+      if (error instanceof Error) {
+        toast.error("Error al registrar el vehiculo" + error.message);
+      }
+    }
+  };
+
+  const updateEstadoVehiculo = async (
+    id: number,
+    estado: boolean
+  ): Promise<void> => {
+    console.log({ id, estado });
+    try {
+      const { error } = await supabase
+        .from("Vehiculo")
+        .update({ estado: !estado })
+        .eq("id", id);
+
+      if (error) {
+        throw new Error(customizeErrorMessages(error));
+      }
+
+      setVehiculos((prevVehiculos) => {
+        return prevVehiculos.map((vehiculo) => {
+          if (vehiculo.id === id) {
+            return {
+              ...vehiculo,
+              estado: !estado,
+            };
+          }
+          return vehiculo;
+        });
+      });
+
+      toast.success("Estado del vehiculo actualizado correctamente");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  const getVehiculoById = async (
+    id: number
+  ): Promise<IVehiculo | undefined> => {
+    try {
+      const { data, error } = await supabase
+        .from("Vehiculo")
+        .select()
+        .eq("id", id)
+        .single();
+
+      console.log(data);
+
+      if (error) {
+        throw new Error(customizeErrorMessages(error));
+      }
+
+      return data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  const updateVehiculo = async (vehiculo: IVehiculo): Promise<void> => {
+    try {
+      const { error } = await supabase
+        .from("Vehiculo")
+        .update(vehiculo)
+        .eq("id", vehiculo.id);
+
+      if (error) {
+        throw new Error(customizeErrorMessages(error));
+      }
+
+      setVehiculos((prevVehiculos) => {
+        return prevVehiculos.map((vehiculo) => {
+          if (vehiculo.id === vehiculo.id) {
+            return {
+              ...vehiculo,
+              ...vehiculo,
+            };
+          }
+          return vehiculo;
+        });
+      });
+
+      toast.success("Vehiculo actualizado correctamente");
+
+      navigation(RUTAS_PRIVADAS.VEHICULOS);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
   };
 
   return (
     <VehiculoContext.Provider
-      value={{ vehiculos, getVehiculos, createVehiculo }}
+      value={{
+        vehiculos,
+        isloading,
+        getVehiculos,
+        createVehiculo,
+        updateEstadoVehiculo,
+        getVehiculoById,
+        updateVehiculo,
+        subirImagenes,
+      }}
     >
       {children}
     </VehiculoContext.Provider>

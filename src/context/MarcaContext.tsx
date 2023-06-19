@@ -28,6 +28,7 @@ export interface MarcaContextProps {
   getMarcaById: (id: number) => Promise<IMarca | undefined>;
   setEditMarca: React.Dispatch<React.SetStateAction<IMarca>>;
   updateMarca: (marca: IMarca) => Promise<void>;
+  getMarcasByEstado: (estado?: boolean) => Promise<void>;
 }
 
 export const MarcaContext = createContext<MarcaContextProps>({
@@ -53,6 +54,9 @@ export const MarcaContext = createContext<MarcaContextProps>({
     throw new Error("El contexto de marcas debe estar dentro del proveedor");
   },
   updateMarca: async () => {
+    throw new Error("El contexto de marcas debe estar dentro del proveedor");
+  },
+  getMarcasByEstado: async () => {
     throw new Error("El contexto de marcas debe estar dentro del proveedor");
   },
 });
@@ -174,9 +178,7 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
         });
       });
 
-      toast.success("Marca actualizada correctamente");
-
-      toast.success("Marca actualizada correctamente");
+      toast.success("Estado de la marca actualizada correctamente");
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -239,6 +241,23 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
     }
   };
 
+  const getMarcasByEstado = async (estado = true): Promise<void> => {
+    try {
+      const { error, data } = await supabase
+        .from("Marca")
+        .select()
+        .eq("estado", estado);
+      if (error) {
+        throw error;
+      }
+      setMarcas(data as IMarca[]);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
+  };
+
   return (
     <MarcaContext.Provider
       value={{
@@ -252,6 +271,7 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
         getMarcaById,
         setEditMarca,
         updateMarca,
+        getMarcasByEstado,
       }}
     >
       {children}

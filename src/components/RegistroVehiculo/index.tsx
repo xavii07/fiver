@@ -11,41 +11,26 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import "./styles.css";
 import { vehiculoValidation } from "../../utils/vehiculoValidation";
 import { initialValues, tipoTransmision } from "./values";
 import MessageErr from "../MessageError";
-import { supabase } from "../../supabase/client";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-import { RUTAS_PRIVADAS } from "../../router/router";
+import { useEffect } from "react";
+import { useMarcas } from "../../hooks/useMarcas";
+import "./styles.css";
+import { useVehiculos } from "../../hooks/useVehiculos";
+import { IVehiculo } from "../../interfaces/vehiculo";
 
 interface FormValues {
   files: FileList | null;
 }
-interface Marca {
-  id: number;
-  nombre: string;
-  imagen: string;
-}
 
 const RegistroVehiculo: React.FC = () => {
-  const [marcas, setMarcas] = useState<Marca[]>([]);
-
-  const navigation = useNavigate();
+  const { getMarcasByEstado, marcas } = useMarcas();
+  const { subirImagenes, createVehiculo } = useVehiculos();
 
   useEffect(() => {
-    const fetchItems = async () => {
-      const { data, error } = await supabase.from("Marca").select("*");
-      if (error) {
-        console.error("Error al obtener los elementos:", error.message);
-      } else {
-        setMarcas(data);
-      }
-    };
-
-    fetchItems();
+    getMarcasByEstado();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -54,66 +39,21 @@ const RegistroVehiculo: React.FC = () => {
       validationSchema={vehiculoValidation}
       onSubmit={async (values) => {
         console.log(values);
-        const { error } = await supabase.from("Vehiculo").insert([
-          {
-            placa: values.placa,
-            idMarca: values.marca,
-            modelo: values.modelo,
-            tipo: values.tipo,
-            anio: values.anio,
-            transmision: values.transmision,
-            combustible: values.combustible,
-            motorHp: values.motorHp,
-            cilindros: values.cilindros,
-            pasajeros: values.pasajeros,
-            puertas: values.puertas,
-            color: values.color,
-            descripcion: values.descripcion,
-            abs: values.abs,
-            ac: values.ac,
-            bluetooth: values.bluetooth,
-            gps: values.gps,
-            airbag: values.airbag,
-            camaraReversa: values.camaraReversa,
-            neblineros: values.neblineros,
-            radio: values.radio,
-            sonidoStereo: values.sonidoStereo,
-            precioHora: values.precioHora,
-            precioDia: values.precioDia,
-          },
-        ]);
+        if (values.imagenes && values.imagenes.length > 0 && values.placa) {
+          const images = values.imagenes;
+          const imagesUrls = await subirImagenes(
+            images as File[],
+            values.placa
+          );
+          console.log({ imagesUrls });
+          const vehiculoUnido = {
+            ...values,
+            imagenes: imagesUrls,
+          };
 
-        if (error) {
-          return toast.error("Error al registrar el vehículo");
+          console.log({ vehiculoUnido });
+          createVehiculo(vehiculoUnido as IVehiculo);
         }
-
-        toast.success("Vehículo registrado correctamente");
-        (values.placa = ""),
-          (values.marca = ""),
-          (values.modelo = ""),
-          (values.tipo = ""),
-          (values.anio = ""),
-          (values.transmision = ""),
-          (values.combustible = ""),
-          (values.motorHp = ""),
-          (values.cilindros = ""),
-          (values.pasajeros = ""),
-          (values.puertas = ""),
-          (values.color = ""),
-          (values.descripcion = ""),
-          (values.imagenes = null),
-          (values.abs = false),
-          (values.ac = false),
-          (values.bluetooth = false),
-          (values.gps = false),
-          (values.airbag = false),
-          (values.camaraReversa = false),
-          (values.neblineros = false),
-          (values.radio = false),
-          (values.sonidoStereo = false),
-          (values.precioHora = ""),
-          (values.precioDia = ""),
-          navigation(RUTAS_PRIVADAS.VEHICULOS);
       }}
     >
       {({ errors, touched, values, handleChange, handleBlur }) => (
@@ -155,21 +95,22 @@ const RegistroVehiculo: React.FC = () => {
                 select
                 label="Marca"
                 size="small"
-                name="marca"
+                name="idMarca"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.marca}
+                value={values.idMarca}
                 fullWidth
+                error={errors.idMarca && touched.idMarca ? true : false}
               >
-                <MenuItem value="" defaultChecked>
-                  --Seleccione una marca--
-                </MenuItem>
                 {marcas.map((marca) => (
                   <MenuItem key={marca.id} value={marca.id}>
                     {marca.nombre}
                   </MenuItem>
                 ))}
               </TextField>
+              <ErrorMessage name="idMarca">
+                {(msg) => <MessageErr message={msg} />}
+              </ErrorMessage>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -248,7 +189,6 @@ const RegistroVehiculo: React.FC = () => {
                 label="Tipo de transmisión"
                 size="small"
                 fullWidth
-                defaultValue={tipoTransmision[0].values}
                 name="transmision"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -416,20 +356,20 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="abs"
-                  defaultValue="false"
+                  defaultValue={false}
                   onChange={handleChange}
+                  name="abs"
+                  value={values.abs}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
-                    name="abs"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
-                    name="abs"
                   />
                 </RadioGroup>
               </FormControl>
@@ -442,15 +382,18 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="ac"
-                  defaultValue="false"
+                  defaultValue={false}
+                  onChange={handleChange}
+                  name="ac"
+                  value={values.ac}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
                   />
@@ -465,15 +408,18 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="blue"
-                  defaultValue="false"
+                  defaultValue={false}
+                  onChange={handleChange}
+                  name="bluetooth"
+                  value={values.bluetooth}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
                   />
@@ -488,15 +434,18 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="gps"
-                  defaultValue="false"
+                  defaultValue={false}
+                  onChange={handleChange}
+                  name="gps"
+                  value={values.gps}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
                   />
@@ -511,15 +460,18 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="airbag"
-                  defaultValue="false"
+                  defaultValue={false}
+                  onChange={handleChange}
+                  name="airbag"
+                  value={values.airbag}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
                   />
@@ -534,15 +486,18 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="reversa"
-                  defaultValue="false"
+                  defaultValue={false}
+                  onChange={handleChange}
+                  name="camaraReversa"
+                  value={values.camaraReversa}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
                   />
@@ -557,15 +512,18 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="nebli"
-                  defaultValue="false"
+                  defaultValue={false}
+                  onChange={handleChange}
+                  name="neblineros"
+                  value={values.neblineros}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
                   />
@@ -580,15 +538,18 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="radio"
-                  defaultValue="false"
+                  defaultValue={false}
+                  onChange={handleChange}
+                  name="radio"
+                  value={values.radio}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
                   />
@@ -603,15 +564,18 @@ const RegistroVehiculo: React.FC = () => {
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
                   aria-labelledby="stereo"
-                  defaultValue="false"
+                  defaultValue={false}
+                  onChange={handleChange}
+                  name="sonidoStereo"
+                  value={values.sonidoStereo}
                 >
                   <FormControlLabel
-                    value="true"
+                    value={true}
                     control={<Radio />}
                     label="Si"
                   />
                   <FormControlLabel
-                    value="false"
+                    value={false}
                     control={<Radio />}
                     label="No"
                   />
