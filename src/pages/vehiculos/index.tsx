@@ -11,6 +11,13 @@ import TablaComponent from "../../components/Tabla";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 
+interface VehiculoRowTable {
+  original: {
+    id: number;
+    estado: boolean;
+  };
+}
+
 const VehiculosPage: React.FC = () => {
   const {
     vehiculos,
@@ -159,7 +166,7 @@ const VehiculosPage: React.FC = () => {
         id: "acciones",
         header: "Acciones",
         accessorKey: "acciones",
-        cell: ({ row }: { row: any }) => (
+        cell: ({ row }: { row: VehiculoRowTable }) => (
           <Stack direction="row">
             <button
               className="bg-transparent icon"
