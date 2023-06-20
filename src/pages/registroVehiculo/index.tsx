@@ -1,7 +1,9 @@
 import { Container, Typography } from "@mui/material";
 import RegisterVehiculo from "../../components/RegistroVehiculo";
+import { useVehiculos } from "../../hooks/useVehiculos";
 
 const RegistroVehiculoPage: React.FC = () => {
+  const { editvehiculo } = useVehiculos();
   return (
     <Container
       sx={{
@@ -12,7 +14,9 @@ const RegistroVehiculoPage: React.FC = () => {
       }}
     >
       <Typography variant="h5" sx={{ textTransform: "uppercase" }}>
-        Registro del vehículo
+        {Object.keys(editvehiculo).length !== 0
+          ? "Editar vehículo"
+          : "Registro de vehículo"}
       </Typography>
       <RegisterVehiculo />
     </Container>

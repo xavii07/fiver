@@ -10,6 +10,7 @@ import Loader from "../../components/Loader";
 import TablaComponent from "../../components/Tabla";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
+import { IVehiculo } from "../../interfaces/vehiculo";
 
 interface VehiculoRowTable {
   original: {
@@ -25,6 +26,7 @@ const VehiculosPage: React.FC = () => {
     getVehiculos,
     updateEstadoVehiculo,
     getVehiculoById,
+    setEditvehiculo,
   } = useVehiculos();
 
   console.log({ vehiculos });
@@ -45,7 +47,7 @@ const VehiculosPage: React.FC = () => {
 
   const handleUpdateVehiculo = async (id: number) => {
     const vehiculo = await getVehiculoById(id);
-    console.log({ vehiculo });
+    setEditvehiculo(vehiculo as IVehiculo);
     navigate(`${RUTAS_PRIVADAS.REGISTRO_VEHICULO}`);
   };
 

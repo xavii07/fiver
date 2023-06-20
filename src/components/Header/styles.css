@@ -1,13 +1,17 @@
 .fondo {
-  background: #348f50;
-  background: -webkit-linear-gradient(to bottom, #56b4d3, #348f50),
-    url("/fondo.png");
-  background: linear-gradient(
-      to bottom,
-      rgba(86, 180, 211, 0.1),
-      rgba(1, 205, 117, 0.899)
+  background: #232526;
+  background: -webkit-linear-gradient(
+      to right,
+      rgba(65, 67, 69, 0.1),
+      rgba(35, 37, 38, 0.1)
     ),
-    url("/fondo.jpg");
+    url("./fondo.jpg");
+  background: linear-gradient(
+      to right,
+      rgba(65, 67, 69, 0.1),
+      rgba(35, 37, 38, 0.1)
+    ),
+    url("./fondo.jpg");
   background-size: contain;
   background-position: center;
   background-blend-mode: multiply;

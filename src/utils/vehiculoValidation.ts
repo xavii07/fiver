@@ -68,7 +68,6 @@ export const vehiculoValidation = yup.object().shape({
     .required("El precio por dia es requerido"),
   imagenes: yup
     .mixed()
-    .required("Las imagenes son requeridas")
     .test("fileSize", "El tamaño del archivo es demasiado grande", (value) => {
       if (!value) return true;
       const maxSize = 5 * 1024 * 1024; // 5MB

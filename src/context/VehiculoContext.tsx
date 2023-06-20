@@ -12,17 +12,20 @@ interface VehiculoProviderProps {
 export interface VehiculoContextProps {
   isloading: boolean;
   vehiculos: IVehiculo[];
+  editvehiculo: IVehiculo;
   getVehiculos: () => Promise<void>;
   createVehiculo: (vehiculo: IVehiculo) => Promise<void>;
   updateEstadoVehiculo: (id: number, estado: boolean) => Promise<void>;
   getVehiculoById: (id: number) => Promise<IVehiculo | undefined>;
   updateVehiculo: (vehiculo: IVehiculo) => Promise<void>;
   subirImagenes: (images: File[], placa: string) => Promise<string[]>;
+  setEditvehiculo: React.Dispatch<React.SetStateAction<IVehiculo>>;
 }
 
 export const VehiculoContext = createContext<VehiculoContextProps>({
   vehiculos: [],
   isloading: false,
+  editvehiculo: {} as IVehiculo,
   getVehiculos: async () => {
     throw new Error("El contexto de marcas debe estar dentro del proveedor");
   },
@@ -41,6 +44,9 @@ export const VehiculoContext = createContext<VehiculoContextProps>({
   subirImagenes: async () => {
     throw new Error("El contexto de marcas debe estar dentro del proveedor");
   },
+  setEditvehiculo: () => {
+    throw new Error("El contexto de marcas debe estar dentro del proveedor");
+  },
 });
 
 export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
@@ -48,12 +54,38 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
 }) => {
   const [vehiculos, setVehiculos] = useState<IVehiculo[]>([]);
   const [isloading, setIsloading] = useState<boolean>(false);
+  const [editvehiculo, setEditvehiculo] = useState<IVehiculo>({} as IVehiculo);
   const navigation = useNavigate();
 
   const subirImagenes = async (
     images: File[],
     placa: string
   ): Promise<string[]> => {
+    //TODO:Verificar si ya existe la carpeta
+    const { data: objetos, error: errorObjetos } = await supabase.storage
+      .from("fiver")
+      .list("vehiculos");
+
+    if (errorObjetos) {
+      console.log(errorObjetos);
+      throw errorObjetos;
+    }
+
+    const existeCarpeta = objetos?.find(
+      (objeto) => objeto.name === `vehiculos/${placa}`
+    );
+
+    if (existeCarpeta) {
+      const { error: eliminarError } = await supabase.storage
+        .from("fiver")
+        .remove([`vehiculos/${placa}`]);
+
+      if (eliminarError) {
+        console.log(eliminarError);
+      }
+    }
+
+    //TODO: Subir las imagenes
     const imagesUrls: string[] = [];
 
     for (const image of images) {
@@ -215,12 +247,14 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
       value={{
         vehiculos,
         isloading,
+        editvehiculo,
         getVehiculos,
         createVehiculo,
         updateEstadoVehiculo,
         getVehiculoById,
         updateVehiculo,
         subirImagenes,
+        setEditvehiculo,
       }}
     >
       {children}

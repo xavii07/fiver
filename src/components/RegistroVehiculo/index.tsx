@@ -26,33 +26,106 @@ interface FormValues {
 
 const RegistroVehiculo: React.FC = () => {
   const { getMarcasByEstado, marcas } = useMarcas();
-  const { subirImagenes, createVehiculo } = useVehiculos();
+  const {
+    subirImagenes,
+    createVehiculo,
+    editvehiculo,
+    updateVehiculo,
+    setEditvehiculo,
+  } = useVehiculos();
 
   useEffect(() => {
     getMarcasByEstado();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (Object.keys(editvehiculo).length !== 0) {
+      initialValues.placa = editvehiculo.placa;
+      initialValues.idMarca = editvehiculo.idMarca;
+      initialValues.modelo = editvehiculo.modelo;
+      initialValues.tipo = editvehiculo.tipo;
+      initialValues.anio = editvehiculo.anio;
+      initialValues.color = editvehiculo.color;
+      initialValues.transmision = editvehiculo.transmision;
+      initialValues.combustible = editvehiculo.combustible;
+      initialValues.motorHp = editvehiculo.motorHp;
+      initialValues.cilindros = editvehiculo.cilindros;
+      initialValues.pasajeros = editvehiculo.pasajeros;
+      initialValues.puertas = editvehiculo.puertas;
+      initialValues.descripcion = editvehiculo.descripcion;
+      initialValues.abs = editvehiculo.abs;
+      initialValues.ac = editvehiculo.ac;
+      initialValues.bluetooth = editvehiculo.bluetooth;
+      initialValues.gps = editvehiculo.gps;
+      initialValues.airbag = editvehiculo.airbag;
+      initialValues.camaraReversa = editvehiculo.camaraReversa;
+      initialValues.neblineros = editvehiculo.neblineros;
+      initialValues.radio = editvehiculo.radio;
+      initialValues.sonidoStereo = editvehiculo.sonidoStereo;
+      initialValues.precioHora = editvehiculo.precioHora;
+      initialValues.precioDia = editvehiculo.precioDia;
+    } else {
+      initialValues.placa = "";
+      initialValues.idMarca = null;
+      initialValues.modelo = "";
+      initialValues.tipo = "";
+      initialValues.anio = "";
+      initialValues.color = "";
+      initialValues.transmision = "";
+      initialValues.combustible = "";
+      initialValues.motorHp = "";
+      initialValues.cilindros = null;
+      initialValues.pasajeros = null;
+      initialValues.puertas = null;
+      initialValues.descripcion = "";
+      initialValues.abs = false;
+      initialValues.ac = false;
+      initialValues.bluetooth = false;
+      initialValues.gps = false;
+      initialValues.airbag = false;
+      initialValues.camaraReversa = false;
+      initialValues.neblineros = false;
+      initialValues.radio = false;
+      initialValues.sonidoStereo = false;
+      initialValues.precioHora = null;
+      initialValues.precioDia = null;
+    }
+  }, [editvehiculo]);
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={vehiculoValidation}
       onSubmit={async (values) => {
-        console.log(values);
-        if (values.imagenes && values.imagenes.length > 0 && values.placa) {
-          const images = values.imagenes;
-          const imagesUrls = await subirImagenes(
-            images as File[],
-            values.placa
-          );
-          console.log({ imagesUrls });
-          const vehiculoUnido = {
-            ...values,
-            imagenes: imagesUrls,
-          };
+        if (Object.keys(editvehiculo).length !== 0) {
+          if (values.imagenes && values.imagenes.length > 0 && values.placa) {
+            const images = values.imagenes;
+            const imagesUrls = await subirImagenes(
+              images as File[],
+              values.placa
+            );
+            const vehiculoUnido = {
+              ...values,
+              imagenes: imagesUrls,
+            };
+            updateVehiculo(vehiculoUnido as IVehiculo);
+            setEditvehiculo({} as IVehiculo);
+          } else {
+            if (values.imagenes && values.imagenes.length > 0 && values.placa) {
+              const images = values.imagenes;
+              const imagesUrls = await subirImagenes(
+                images as File[],
+                values.placa
+              );
+              const vehiculoUnido = {
+                ...values,
+                imagenes: imagesUrls,
+              };
 
-          console.log({ vehiculoUnido });
-          createVehiculo(vehiculoUnido as IVehiculo);
+              createVehiculo(vehiculoUnido as IVehiculo);
+            }
+          }
         }
       }}
     >
@@ -638,7 +711,9 @@ const RegistroVehiculo: React.FC = () => {
                 size="large"
                 color="primary"
               >
-                Registrar vehículo
+                {Object.keys(editvehiculo).length !== 0
+                  ? "Editar vehículo"
+                  : "Registrar vehículo"}
               </Button>
             </Grid>
           </Grid>
