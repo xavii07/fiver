@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { customizeErrorMessages, supabase } from "../supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -57,6 +57,34 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
   const [editvehiculo, setEditvehiculo] = useState<IVehiculo>({} as IVehiculo);
   const navigation = useNavigate();
 
+  useEffect(() => {
+    memorizedGetVehiculos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const memorizedGetVehiculos = useCallback(() => {
+    getVehiculos();
+  }, []);
+
+  const getVehiculos = async (): Promise<void> => {
+    setIsloading(true);
+    try {
+      const { error, data } = await supabase
+        .from("Vehiculo")
+        .select("*, Marca(nombre)");
+
+      if (error) {
+        throw error;
+      }
+      setVehiculos(data as IVehiculo[]);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al obtener los vehiculos");
+    } finally {
+      setIsloading(false);
+    }
+  };
+
   const subirImagenes = async (
     images: File[],
     placa: string
@@ -102,25 +130,6 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
     }
 
     return imagesUrls;
-  };
-
-  const getVehiculos = async (): Promise<void> => {
-    setIsloading(true);
-    try {
-      const { error, data } = await supabase
-        .from("Vehiculo")
-        .select("*, Marca(nombre)");
-
-      if (error) {
-        throw error;
-      }
-      setVehiculos(data as IVehiculo[]);
-    } catch (error) {
-      console.log(error);
-      toast.error("Error al obtener los vehiculos");
-    } finally {
-      setIsloading(false);
-    }
   };
 
   const createVehiculo = async (vehiculo: IVehiculo): Promise<void> => {

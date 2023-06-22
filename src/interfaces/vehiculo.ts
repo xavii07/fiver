@@ -12,7 +12,7 @@ export interface IVehiculo {
   pasajeros: number | null;
   puertas: number | null;
   descripcion: string;
-  imagenes: string[] | File[] | null;
+  imagenes: string | File[] | null | string[];
   abs: boolean;
   ac: boolean;
   bluetooth: boolean;

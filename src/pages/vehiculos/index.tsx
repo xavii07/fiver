@@ -32,15 +32,6 @@ const VehiculosPage: React.FC = () => {
   console.log({ vehiculos });
   const navigate = useNavigate();
 
-  const memorizedGetMarcas = useCallback(() => {
-    getVehiculos();
-  }, [getVehiculos]);
-
-  useEffect(() => {
-    memorizedGetMarcas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleUpdateEstado = async (id: number, estado: boolean) => {
     await updateEstadoVehiculo(id, estado);
   };

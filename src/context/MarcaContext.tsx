@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { customizeErrorMessages, supabase } from "../supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -66,6 +66,15 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
   const [isloading, setIsloading] = useState<boolean>(false);
   const [editmarca, setEditMarca] = useState<IMarca>({} as IMarca);
   const navigation = useNavigate();
+
+  const memorizedGetMarcas = useCallback(() => {
+    getMarcas();
+  }, []);
+
+  useEffect(() => {
+    memorizedGetMarcas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const subirImagen = async (file: File): Promise<IFormValueMarca> => {
     //TODO: Verificar si el archivo existe en el almacenamiento y eliminarlo
