@@ -74,7 +74,7 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
         .select("*, Marca(nombre)");
 
       if (error) {
-        throw error;
+        throw error.message;
       }
       setVehiculos(data as IVehiculo[]);
     } catch (error) {
@@ -133,7 +133,6 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
   };
 
   const createVehiculo = async (vehiculo: IVehiculo): Promise<void> => {
-    console.log(vehiculo);
     try {
       const { error, data } = await supabase.from("Vehiculo").insert({
         ...vehiculo,
@@ -141,13 +140,12 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
 
       if (error) {
         console.log(error);
-        throw error;
+        throw new Error(customizeErrorMessages(error));
       }
 
       if (data) {
         setVehiculos([...vehiculos, ...data]);
       }
-      console.log(data);
 
       toast.success("Vehiculo registrada correctamente");
       navigation(RUTAS_PRIVADAS.VEHICULOS);
@@ -171,7 +169,7 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
         .eq("id", id);
 
       if (error) {
-        throw new Error(customizeErrorMessages(error));
+        throw new Error(error.message);
       }
 
       setVehiculos((prevVehiculos) => {
@@ -207,7 +205,7 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
       console.log(data);
 
       if (error) {
-        throw new Error(customizeErrorMessages(error));
+        throw new Error(error.message);
       }
 
       return data;
@@ -226,7 +224,7 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
         .eq("id", vehiculo.id);
 
       if (error) {
-        throw new Error(customizeErrorMessages(error));
+        throw new Error(error.message);
       }
 
       setVehiculos((prevVehiculos) => {

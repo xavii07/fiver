@@ -21,7 +21,7 @@ import { useVehiculos } from "../../hooks/useVehiculos";
 import { IVehiculo } from "../../interfaces/vehiculo";
 
 interface FormValues {
-  files: FileList | null;
+  files: FileList | undefined;
 }
 
 const RegistroVehiculo: React.FC = () => {
@@ -67,7 +67,7 @@ const RegistroVehiculo: React.FC = () => {
       initialValues.precioDia = editvehiculo.precioDia;
     } else {
       initialValues.placa = "";
-      initialValues.idMarca = null;
+      initialValues.idMarca = undefined;
       initialValues.modelo = "";
       initialValues.tipo = "";
       initialValues.anio = "";
@@ -75,9 +75,9 @@ const RegistroVehiculo: React.FC = () => {
       initialValues.transmision = "";
       initialValues.combustible = "";
       initialValues.motorHp = "";
-      initialValues.cilindros = null;
-      initialValues.pasajeros = null;
-      initialValues.puertas = null;
+      initialValues.cilindros = undefined;
+      initialValues.pasajeros = undefined;
+      initialValues.puertas = undefined;
       initialValues.descripcion = "";
       initialValues.abs = false;
       initialValues.ac = false;
@@ -88,8 +88,8 @@ const RegistroVehiculo: React.FC = () => {
       initialValues.neblineros = false;
       initialValues.radio = false;
       initialValues.sonidoStereo = false;
-      initialValues.precioHora = null;
-      initialValues.precioDia = null;
+      initialValues.precioHora = undefined;
+      initialValues.precioDia = undefined;
     }
   }, [editvehiculo]);
 
@@ -111,20 +111,20 @@ const RegistroVehiculo: React.FC = () => {
             };
             updateVehiculo(vehiculoUnido as IVehiculo);
             setEditvehiculo({} as IVehiculo);
-          } else {
-            if (values.imagenes && values.imagenes.length > 0 && values.placa) {
-              const images = values.imagenes;
-              const imagesUrls = await subirImagenes(
-                images as File[],
-                values.placa
-              );
-              const vehiculoUnido = {
-                ...values,
-                imagenes: imagesUrls,
-              };
+          }
+        } else {
+          if (values.imagenes && values.imagenes.length > 0 && values.placa) {
+            const images = values.imagenes;
+            const imagesUrls = await subirImagenes(
+              images as File[],
+              values.placa
+            );
+            const vehiculoUnido = {
+              ...values,
+              imagenes: imagesUrls,
+            };
 
-              createVehiculo(vehiculoUnido as IVehiculo);
-            }
+            createVehiculo(vehiculoUnido as IVehiculo);
           }
         }
       }}
@@ -171,7 +171,7 @@ const RegistroVehiculo: React.FC = () => {
                 name="idMarca"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.idMarca}
+                value={values.idMarca || ""}
                 fullWidth
                 error={errors.idMarca && touched.idMarca ? true : false}
               >
@@ -325,7 +325,7 @@ const RegistroVehiculo: React.FC = () => {
                 name="cilindros"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.cilindros}
+                value={values.cilindros || ""}
                 error={errors.cilindros && touched.cilindros ? true : false}
               />
               <ErrorMessage name="cilindros">
@@ -343,14 +343,13 @@ const RegistroVehiculo: React.FC = () => {
                 name="pasajeros"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.pasajeros}
+                value={values.pasajeros || ""}
                 error={errors.pasajeros && touched.pasajeros ? true : false}
               />
               <ErrorMessage name="pasajeros">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
-
             <Grid item xs={12} sm={3}>
               <TextField
                 label="Numero de puertas"
@@ -362,7 +361,7 @@ const RegistroVehiculo: React.FC = () => {
                 name="puertas"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.puertas}
+                value={values.puertas || ""}
                 error={errors.puertas && touched.puertas ? true : false}
               />
               <ErrorMessage name="puertas">
@@ -392,7 +391,6 @@ const RegistroVehiculo: React.FC = () => {
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 label="Descripcion"
@@ -411,7 +409,6 @@ const RegistroVehiculo: React.FC = () => {
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
-
             <Grid item xs={12} sm={12}>
               <Typography
                 variant="body1"
@@ -420,7 +417,6 @@ const RegistroVehiculo: React.FC = () => {
                 Características Adicionales
               </Typography>
             </Grid>
-
             <Grid item xs={6} sm={1}>
               <FormControl sx={{ display: "flex", justifyContent: "center" }}>
                 <FormLabel id="abs" sx={{ textAlign: "center" }}>
@@ -655,7 +651,6 @@ const RegistroVehiculo: React.FC = () => {
                 </RadioGroup>
               </FormControl>
             </Grid>
-
             <Grid item xs={12} sm={12}>
               <Typography
                 variant="body1"
@@ -664,7 +659,6 @@ const RegistroVehiculo: React.FC = () => {
                 Datos para Reserva
               </Typography>
             </Grid>
-
             <Grid item xs={12} sm={3}>
               <TextField
                 label="Precio por hora"
@@ -676,7 +670,7 @@ const RegistroVehiculo: React.FC = () => {
                 name="precioHora"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.precioHora}
+                value={values.precioHora || ""}
                 error={errors.precioHora && touched.precioHora ? true : false}
               />
               <ErrorMessage name="precioHora">
@@ -694,7 +688,7 @@ const RegistroVehiculo: React.FC = () => {
                 name="precioDia"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.precioDia}
+                value={values.precioDia || ""}
                 error={errors.precioDia && touched.precioDia ? true : false}
               />
               <ErrorMessage name="precioDia">

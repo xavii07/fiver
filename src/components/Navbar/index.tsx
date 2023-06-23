@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AdbIcon from "@mui/icons-material/Adb";
-import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MouseEvent, useState } from "react";
 import { Link } from "react-router-dom";
@@ -42,7 +41,6 @@ const Navbar: React.FC = () => {
             <Typography
               variant="h6"
               noWrap
-              component="a"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -85,17 +83,15 @@ const Navbar: React.FC = () => {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Link
-                      to={`/admin/${page.toLowerCase()}`}
-                      className="boton"
-                      key={page}
-                      onClick={handleCloseNavMenu}
-                      style={{ margin: 2, color: "#000", display: "block" }}
-                    >
-                      {page}
-                    </Link>
-                  </MenuItem>
+                  <Link
+                    to={`/admin/${page.toLowerCase()}`}
+                    className="boton"
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    style={{ margin: 2, color: "#000", display: "block" }}
+                  >
+                    {page}
+                  </Link>
                 ))}
               </Menu>
             </Box>
@@ -104,8 +100,6 @@ const Navbar: React.FC = () => {
             <Typography
               variant="h5"
               noWrap
-              component="a"
-              href=""
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -117,7 +111,7 @@ const Navbar: React.FC = () => {
                 textDecoration: "none",
               }}
             >
-              FIVER
+              <Link to={"/"}>FIVER</Link>
             </Typography>
             <Box
               sx={{

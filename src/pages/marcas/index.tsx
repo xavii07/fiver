@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Container, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { IconPencilPlus } from "@tabler/icons-react";
@@ -14,10 +14,25 @@ import { IMarca } from "../../interfaces/marca";
 import { useNavigate } from "react-router-dom";
 
 const MarcasPage: React.FC = () => {
-  const { marcas, isloading, updateEstadoMarca, setEditMarca, getMarcaById } =
-    useMarcas();
+  const {
+    marcas,
+    isloading,
+    updateEstadoMarca,
+    setEditMarca,
+    getMarcaById,
+    getMarcas,
+  } = useMarcas();
 
   const navigate = useNavigate();
+
+  const memorizedGetMarcas = useCallback(() => {
+    getMarcas();
+  }, [getMarcas]);
+
+  useEffect(() => {
+    memorizedGetMarcas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleUpdateEstado = async (id: number, estado: boolean) => {
     await updateEstadoMarca(id, estado);

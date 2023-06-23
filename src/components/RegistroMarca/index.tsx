@@ -6,9 +6,9 @@ import MessageErr from "../MessageError";
 
 import { marcaValidation } from "../../utils/marcaValidation";
 import { initialValues } from "./values";
-import "./styles.css";
 import { useEffect } from "react";
 import { IMarca } from "../../interfaces/marca";
+import "./styles.css";
 
 const RegistroMarca: React.FC = () => {
   const { createMarca, subirImagen, editmarca, updateMarca, setEditMarca } =

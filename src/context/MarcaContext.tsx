@@ -144,6 +144,7 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
       });
 
       if (error) {
+        console.log(error);
         throw new Error(customizeErrorMessages(error));
       }
 
@@ -172,7 +173,7 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
         .eq("id", id);
 
       if (error) {
-        throw new Error(customizeErrorMessages(error));
+        throw new Error(error.message);
       }
 
       setMarcas((prevMarcas) => {
@@ -206,7 +207,7 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
       console.log(data);
 
       if (error) {
-        throw new Error(customizeErrorMessages(error));
+        throw new Error(error.message);
       }
 
       return data;
@@ -225,7 +226,7 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
         .eq("id", marca.id);
 
       if (error) {
-        throw new Error(customizeErrorMessages(error));
+        throw new Error(error.message);
       }
 
       setMarcas((prevMarcas) => {
@@ -257,7 +258,7 @@ export const MarcaProvider: React.FC<MarcaProviderProps> = ({ children }) => {
         .select()
         .eq("estado", estado);
       if (error) {
-        throw error;
+        throw error.message;
       }
       setMarcas(data as IMarca[]);
     } catch (error) {
