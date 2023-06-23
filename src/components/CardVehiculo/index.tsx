@@ -63,7 +63,9 @@ const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculo }) => {
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
-          <Button size="small">Reservar</Button>
+          <Button size="small" variant="outlined">
+            Reservar
+          </Button>
         </CardActions>
       </div>
     </Card>

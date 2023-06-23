@@ -31,13 +31,16 @@ const HeaderComponent: React.FC<HeaderProps> = ({
               direction="row"
               justifyContent="center"
               alignItems="center"
-              sx={{ height: "100%" }}
+              sx={{
+                height: "calc(100vh - 64px)",
+                textAlign: "center",
+              }}
             >
               <Grid item>
-                <Typography variant="h2">{title}</Typography>
+                <Typography variant="h1">{title}</Typography>
               </Grid>
               <Grid item>
-                <Typography variant="body1">{description}</Typography>
+                <Typography variant="h6">{description}</Typography>
               </Grid>
               {element && (
                 <Grid item sx={{ marginTop: 4 }}>

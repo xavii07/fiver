@@ -33,91 +33,52 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Box>
-      <AppBar position="sticky" sx={{ background: "#fff", boxShadow: "0" }}>
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              <Link to={"/"}>FIVER</Link>
-            </Typography>
+    <AppBar position="sticky" sx={{ background: "#fff", boxShadow: "0" }}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Typography
+            variant="h6"
+            noWrap
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            <Link to={"/"}>FIVER</Link>
+          </Typography>
 
-            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: "block", md: "none" },
-                }}
-              >
-                {pages.map((page) => (
-                  <Link
-                    to={`/admin/${page.toLowerCase()}`}
-                    className="boton"
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    style={{ margin: 2, color: "#000", display: "block" }}
-                  >
-                    {page}
-                  </Link>
-                ))}
-              </Menu>
-            </Box>
-
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
             >
-              <Link to={"/"}>FIVER</Link>
-            </Typography>
-            <Box
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
               sx={{
-                flexGrow: 1,
-                display: { xs: "none", md: "flex" },
-                justifyContent: "center",
+                display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page) => (
@@ -131,19 +92,56 @@ const Navbar: React.FC = () => {
                   {page}
                 </Link>
               ))}
-            </Box>
+            </Menu>
+          </Box>
 
-            <Grid item>
-              <Stack direction="row" spacing={1}>
-                <Button variant="contained" onClick={() => navigate("/login")}>
-                  Iniciar Sesion
-                </Button>
-              </Stack>
-            </Grid>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </Box>
+          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            <Link to={"/"}>FIVER</Link>
+          </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+            }}
+          >
+            {pages.map((page) => (
+              <Link
+                to={`/admin/${page.toLowerCase()}`}
+                className="boton"
+                key={page}
+                onClick={handleCloseNavMenu}
+                style={{ margin: 2, color: "#000", display: "block" }}
+              >
+                {page}
+              </Link>
+            ))}
+          </Box>
+
+          <Grid item>
+            <Stack direction="row" spacing={1}>
+              <Button variant="contained" onClick={() => navigate("/login")}>
+                Iniciar Sesion
+              </Button>
+            </Stack>
+          </Grid>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 };
 

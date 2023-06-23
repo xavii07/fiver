@@ -1,20 +1,20 @@
 .fondo {
-  background: #232526;
+  background: #000000;
   background: -webkit-linear-gradient(
-      to right,
-      rgba(65, 67, 69, 0.1),
-      rgba(35, 37, 38, 0.1)
+      to bottom right,
+      rgba(67, 67, 67, 0.399),
+      rgba(0, 0, 0, 0.562)
     ),
     url("./fondo.jpg");
   background: linear-gradient(
-      to right,
-      rgba(65, 67, 69, 0.1),
-      rgba(35, 37, 38, 0.1)
+      to bottom right,
+      rgba(67, 67, 67, 0.567),
+      rgba(0, 0, 0, 0.537)
     ),
     url("./fondo.jpg");
-  background-size: contain;
+  background-size: cover;
   background-position: center;
-  background-blend-mode: multiply;
+  background-blend-mode: color-burn;
   background-repeat: no-repeat;
   color: #fff;
   opacity: 0.9;
