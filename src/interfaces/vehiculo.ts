@@ -28,6 +28,10 @@ export interface IVehiculo {
   idMarca: number | undefined;
 }
 
+export interface IVehiculoRequest extends IVehiculo {
+  imagenes: string[];
+}
+
 export interface IVehiculoResponse extends IVehiculo {
   Marca: {
     nombre: string;

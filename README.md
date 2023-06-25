@@ -1,4 +1,5 @@
 # FIVER 🛻
+
 Aplicacion web para la empresa FIVER - Frontend React - Supabase
 
 - #### Clonar repositorio
@@ -7,8 +8,8 @@ Aplicacion web para la empresa FIVER - Frontend React - Supabase
   `pnpm install`
 - #### Crear archivo .env.local con sus datos
   ` VITE_SUPABASE_URL=
-    VITE_SUPABASE_KEY=
-    VITE_URL_IMAGEN=`
+  VITE_SUPABASE_KEY=
+  VITE_URL_IMAGEN=`
 - #### Iniciar servidor local
   `pnpm run dev`
 - #### Abrir un navegador

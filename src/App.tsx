@@ -20,10 +20,6 @@ function App() {
           <Route path={RUTAS_PUBLICAS.HOME} element={<HomePage />} />
           <Route path={RUTAS_PUBLICAS.VEHICULO} element={<VehiculoPage />} />
           <Route
-            path={RUTAS_PUBLICAS.REGISTRO_USUARIO}
-            element={<RegistroUsuarioPage />}
-          />
-          <Route
             path={RUTAS_PRIVADAS.REGISTRO_VEHICULO}
             element={<RegistroVehiculoPage />}
           />
@@ -34,6 +30,10 @@ function App() {
             element={<RegistroMarcaPage />}
           />
         </Route>
+        <Route
+          path={RUTAS_PUBLICAS.REGISTRO_USUARIO}
+          element={<RegistroUsuarioPage />}
+        />
         <Route path={RUTAS_PUBLICAS.LOGIN} element={<LoginPage />} />
       </Routes>
     </Suspense>

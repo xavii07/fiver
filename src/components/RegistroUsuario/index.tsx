@@ -10,6 +10,10 @@ import {
   FormControlLabel,
   Radio,
   Typography,
+  InputLabel,
+  OutlinedInput,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import MessageErr from "../MessageError";
 import { categoriaLicencia, initialValues, provincias } from "./values";
@@ -18,10 +22,42 @@ import { IUsuarioRegistro } from "../../interfaces/usuario";
 import { Link } from "react-router-dom";
 import { RUTAS_PUBLICAS } from "../../router/router";
 import { usuarioValidation } from "../../utils/usuarioValidation";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useState } from "react";
+import { supabase } from "../../supabase/client";
 
 const RegistroUsuario: React.FC = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
   const handleSubmit = async (values: IUsuarioRegistro) => {
     console.log(values);
+
+    const { data, error } = await supabase.auth.signUp({
+      email: values.correoElectronico,
+      password: values.contrasena,
+      phone: values.celular,
+      options: {
+        data: {
+          first_name: "John",
+          last_name: "Doe",
+          age: 27,
+        },
+      },
+    });
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    console.log(data);
   };
 
   return (
@@ -30,8 +66,6 @@ const RegistroUsuario: React.FC = () => {
       onSubmit={handleSubmit}
       validationSchema={usuarioValidation}
       validateOnBlur={true}
-      enableReinitialize={true}
-      context={{}}
     >
       {({ errors, touched, values, handleChange, handleBlur }) => (
         <Form
@@ -99,6 +133,7 @@ const RegistroUsuario: React.FC = () => {
             <Grid item xs={12} sm={4}>
               <TextField
                 type="date"
+                label="Fecha de Nacimiento"
                 value={values.fechaNacimiento}
                 name="fechaNacimiento"
                 onChange={handleChange}
@@ -151,7 +186,7 @@ const RegistroUsuario: React.FC = () => {
                   </MenuItem>
                 ))}
               </TextField>
-              <ErrorMessage name="idMarca">
+              <ErrorMessage name="provincia">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
@@ -195,14 +230,23 @@ const RegistroUsuario: React.FC = () => {
                   </MenuItem>
                 ))}
               </TextField>
-              <ErrorMessage name="idMarca">
+              <ErrorMessage name="categoriaLicencia">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>
             </Grid>
-            <Grid item xs={6} sm={4}>
-              <FormControl sx={{ display: "flex", justifyContent: "center" }}>
-                <FormLabel id="sexo" sx={{ textAlign: "center" }}>
-                  Sexo
+            <Grid item xs={6} sm={3}>
+              <FormControl
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "-1rem",
+                }}
+              >
+                <FormLabel
+                  id="sexo"
+                  sx={{ textAlign: "center", fontSize: "0.9rem" }}
+                >
+                  Sexo:
                 </FormLabel>
                 <RadioGroup
                   sx={{ flexDirection: "row", justifyContent: "center" }}
@@ -232,7 +276,6 @@ const RegistroUsuario: React.FC = () => {
                 Datos de la cuenta
               </Typography>
             </Grid>
-
             <Grid item xs={12} sm={4}>
               <TextField
                 type="email"
@@ -257,20 +300,34 @@ const RegistroUsuario: React.FC = () => {
               </ErrorMessage>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                type="password"
-                label="Contraseña"
-                value={values.contrasena}
-                name="contrasena"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                variant="outlined"
-                placeholder="********"
-                autoComplete="off"
-                size="small"
-                fullWidth
-                error={errors.contrasena && touched.contrasena ? true : false}
-              />
+              <FormControl size="small" variant="outlined" fullWidth>
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Contraseña
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  value={values.contrasena}
+                  name="contrasena"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="********"
+                  error={errors.contrasena && touched.contrasena ? true : false}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Contraseña"
+                />
+              </FormControl>
               <ErrorMessage name="contrasena">
                 {(msg) => <MessageErr message={msg} />}
               </ErrorMessage>

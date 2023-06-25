@@ -16,12 +16,12 @@ export const Gridd = styled(Grid)(({ theme }) => ({
 
 export const Imagen = styled("img")(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
-    width: "70%",
+    width: "60%",
     display: "block",
     margin: "0 auto",
   },
   [theme.breakpoints.up("md")]: {
-    width: "90%",
+    width: "80%",
   },
 }));
 
