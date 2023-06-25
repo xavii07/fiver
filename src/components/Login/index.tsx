@@ -12,6 +12,8 @@ import { loginValidation } from "../../utils/loginValidation";
 import { useFormik } from "formik";
 import imgLogin from "/login.png";
 import { Gridd, Imagen, Titulo } from "./style";
+import { Link } from "react-router-dom";
+import { RUTAS_PUBLICAS } from "../../router/router";
 
 type LoginType = {
   email: string;
@@ -53,7 +55,7 @@ const Login: React.FC = () => {
           >
             <Box>
               <Titulo>Iniciar Sesion</Titulo>
-              <Typography variant="h6" sx={{ mb: 2, color:"#bbb" }}>
+              <Typography variant="h6" sx={{ mb: 2, color: "#bbb" }}>
                 (FIVER)
               </Typography>
             </Box>
@@ -92,6 +94,13 @@ const Login: React.FC = () => {
               >
                 Iniciar Sesion
               </Button>
+              <p style={{ margin: 0 }}>¿No tienes una cuenta?</p>
+              <Link
+                to={RUTAS_PUBLICAS.REGISTRO_USUARIO}
+                style={{ textDecoration: "none" }}
+              >
+                Registrate
+              </Link>
             </Box>
           </Paper>
         </Grid>
