@@ -27,3 +27,9 @@ export interface IVehiculo {
   estado?: boolean;
   idMarca: number | undefined;
 }
+
+export interface IVehiculoResponse extends IVehiculo {
+  Marca: {
+    nombre: string;
+  };
+}

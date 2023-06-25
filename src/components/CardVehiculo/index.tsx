@@ -3,15 +3,19 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 
-import { IVehiculo } from "../../interfaces/vehiculo";
+import { IVehiculoResponse } from "../../interfaces/vehiculo";
 import "./styles.css";
-import { Button, Rating } from "@mui/material";
+import { Button, Chip } from "@mui/material";
+import { Link } from "react-router-dom";
+import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
+import PermDataSettingIcon from "@mui/icons-material/PermDataSetting";
+import CarRentalIcon from "@mui/icons-material/CarRental";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
-const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculo }) => {
+const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculoResponse }) => {
   const descripcion = vehiculo?.descripcion?.substring(0, 150) + "...";
 
   return (
@@ -23,48 +27,138 @@ const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculo }) => {
         colGap: "13rem",
         marginBottom: "1rem",
         flexDirection: "row-reverse",
+        justifyContent: "space-between",
       }}
     >
       <div>
         <CardMedia
           sx={{ width: 400 }}
           component="img"
-          image={`${vehiculo?.imagenes[0]}`}
+          image={`${vehiculo.imagenes[0]}`}
           alt="Paella dish"
         />
       </div>
       <div>
         <CardHeader
-          component="h4"
-          title={`${vehiculo?.modelo}`}
-          subheader={`${vehiculo?.anio} - ${vehiculo?.Marca.nombre}`}
-          titleTypographyProps={{
-            fontSize: "1.6rem",
-            fontWeight: "bold",
-          }}
-          subheaderTypographyProps={{
-            fontSize: "1rem",
-            fontWeight: "bold",
-            paddingBottom: 0,
-          }}
+          component={() => (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "2rem",
+                marginTop: "1rem",
+              }}
+            >
+              <div>
+                <h1
+                  style={{ marginTop: 0, marginBottom: 0, marginLeft: "1rem" }}
+                >
+                  {vehiculo.modelo}
+                </h1>
+                <p
+                  style={{ marginTop: 0, marginBottom: 0, marginLeft: "1rem" }}
+                >
+                  {vehiculo.anio} - {vehiculo?.Marca.nombre}
+                </p>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                }}
+              >
+                <div>
+                  <Chip
+                    component={"h1"}
+                    label={`${vehiculo.precioHora}`}
+                    variant="outlined"
+                    icon={<AttachMoneyIcon />}
+                  />
+                  <p
+                    style={{
+                      margin: 0,
+                      textAlign: "center",
+                      fontSize: "0.8rem",
+                      color: "#666",
+                    }}
+                  >
+                    Por Hora
+                  </p>
+                </div>
+                <div>
+                  <Chip
+                    component={"h1"}
+                    variant="outlined"
+                    label={`${vehiculo.precioDia}`}
+                    icon={<AttachMoneyIcon />}
+                  />
+                  <p
+                    style={{
+                      margin: 0,
+                      textAlign: "center",
+                      fontSize: "0.8rem",
+                      color: "#666",
+                    }}
+                  >
+                    Por Día
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         />
 
         <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {`${vehiculo?.tipo}`}
-          </Typography>
-          <Typography component="legend">Read only</Typography>
-          <Rating name="read-only" value={5} readOnly />
+          <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+            <Chip
+              size="small"
+              variant="outlined"
+              color="primary"
+              label={`${vehiculo?.tipo}`}
+              icon={<CarRentalIcon />}
+            />
+            <Chip
+              size="small"
+              variant="outlined"
+              color="primary"
+              label={`HP - ${vehiculo?.motorHp}`}
+            />
+            <Chip
+              variant="outlined"
+              color="primary"
+              size="small"
+              label={`${vehiculo?.transmision}`}
+              icon={<PermDataSettingIcon />}
+            />
+            <Chip
+              variant="outlined"
+              color="primary"
+              size="small"
+              label={`${vehiculo?.combustible}`}
+              icon={<LocalGasStationIcon />}
+            />
+            <Chip
+              variant="outlined"
+              color="primary"
+              size="small"
+              label={`${vehiculo?.color}`}
+              icon={<ColorLensIcon />}
+            />
+          </div>
           <Typography variant="body2" color="text.secondary">
             {descripcion}
           </Typography>
         </CardContent>
-        <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <Button size="small" variant="outlined">
-            Reservar
+        <CardActions>
+          <Button size="small" variant="outlined" sx={{ marginBottom: "1rem" }}>
+            <Link
+              to={`/vehiculos/${vehiculo.id}`}
+              style={{ textDecoration: "none", color: "#444" }}
+            >
+              Ver más...
+            </Link>
           </Button>
         </CardActions>
       </div>

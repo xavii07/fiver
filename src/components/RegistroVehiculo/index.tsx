@@ -119,6 +119,7 @@ const RegistroVehiculo: React.FC = () => {
               images as File[],
               values.placa
             );
+
             const vehiculoUnido = {
               ...values,
               imagenes: imagesUrls,

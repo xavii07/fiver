@@ -1,16 +1,33 @@
 import { Button, Container } from "@mui/material";
 import HeaderComponent from "../../components/Header";
 import { useVehiculos } from "../../hooks/useVehiculos";
-import { IVehiculo } from "../../interfaces/vehiculo";
+import { IVehiculo, IVehiculoResponse } from "../../interfaces/vehiculo";
 import { useMarcas } from "../../hooks/useMarcas";
 import CardVehiculo from "../../components/CardVehiculo";
 import PaginationPage from "../../components/PaginationPage";
+import { useState } from "react";
+import SliderFilter from "../../components/SliderFilter";
+import MarcasSelectFilter from "../../components/MarcasSelectFilter";
 
 const HomePage = () => {
   const { vehiculos } = useVehiculos();
   const { marcas } = useMarcas();
+  const [page, setPage] = useState(1);
 
-  console.log(vehiculos);
+  const handleChangePage = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  const filteredVehiculos = (): IVehiculo[] => {
+    const startIndex = (page - 1) * 5;
+    const endIndex = startIndex + 5;
+    return vehiculos.slice(startIndex, endIndex);
+  };
+
+  const totalPages = Math.ceil(vehiculos.length / 5);
 
   return (
     <Container maxWidth={false} style={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -41,20 +58,46 @@ const HomePage = () => {
           {marcas.map((marca) => (
             <div key={marca.id}>
               <img src={marca.imagen} width={70} height={55} />
-              <h4 style={{ textAlign: "center", color: "#999" }}>
+              <p
+                style={{
+                  textAlign: "center",
+                  color: "#666",
+                  margin: 0,
+                  fontSize: "0.9rem",
+                }}
+              >
                 {marca.nombre}
-              </h4>
+              </p>
             </div>
           ))}
         </div>
       </Container>
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          marginTop: "3rem",
+          border: "1px solid #ccc",
+          padding: "1rem",
+          alignItems: "center",
+        }}
+      >
+        <SliderFilter />
+        <MarcasSelectFilter marcas={marcas} />
+      </Container>
       <Container style={{ marginBottom: "5rem", marginTop: "5rem" }}>
-        {vehiculos.map((vehiculo: IVehiculo) => (
+        {filteredVehiculos().map((vehiculo: IVehiculo) => (
           <div key={vehiculo.id}>
-            <CardVehiculo vehiculo={vehiculo} />
+            <CardVehiculo vehiculo={vehiculo as IVehiculoResponse} />
           </div>
         ))}
-        <PaginationPage />
+        {totalPages > 1 && (
+          <PaginationPage
+            page={page}
+            handleChangePage={handleChangePage}
+            totalPages={totalPages}
+          />
+        )}
       </Container>
     </Container>
   );

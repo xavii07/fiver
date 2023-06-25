@@ -9,6 +9,7 @@ const VehiculosPage = lazy(() => import("./pages/vehiculos"));
 const MarcasPage = lazy(() => import("./pages/marcas"));
 const RegistroMarcaPage = lazy(() => import("./pages/registroMarca"));
 import Loader from "./components/Loader";
+import VehiculoPage from "./pages/vehiculo";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path={RUTAS_PUBLICAS.HOME} element={<RouterLayout />}>
           <Route path={RUTAS_PUBLICAS.HOME} element={<HomePage />} />
+          <Route path={RUTAS_PUBLICAS.VEHICULO} element={<VehiculoPage />} />
           <Route
             path={RUTAS_PRIVADAS.REGISTRO_VEHICULO}
             element={<RegistroVehiculoPage />}

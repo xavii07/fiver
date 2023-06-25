@@ -2,6 +2,8 @@ export const RUTAS_PUBLICAS = {
   LOGIN: "/login",
   REGISTRO: "/registro",
   HOME: "/",
+  VEHICULOS: "/vehiculos",
+  VEHICULO: "/vehiculos/:id",
 };
 
 export const RUTAS_PRIVADAS = {
