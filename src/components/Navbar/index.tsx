@@ -17,7 +17,20 @@ import { MouseEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
 
-const pages = ["Marcas", "Vehiculos", "Perfil"];
+const pages = [
+  {
+    name: "Inicio",
+    path: "/",
+  },
+  {
+    name: "Vehiculos",
+    path: "/admin/vehiculos",
+  },
+  {
+    name: "Marcas",
+    path: "/admin/marcas",
+  },
+];
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -83,13 +96,13 @@ const Navbar: React.FC = () => {
             >
               {pages.map((page) => (
                 <Link
-                  to={`/admin/${page.toLowerCase()}`}
+                  to={page.path}
                   className="boton"
-                  key={page}
+                  key={page.path}
                   onClick={handleCloseNavMenu}
                   style={{ margin: 2, color: "#000", display: "block" }}
                 >
-                  {page}
+                  {page.name}
                 </Link>
               ))}
             </Menu>
@@ -121,13 +134,13 @@ const Navbar: React.FC = () => {
           >
             {pages.map((page) => (
               <Link
-                to={`/admin/${page.toLowerCase()}`}
+                to={page.path}
                 className="boton"
-                key={page}
+                key={page.path}
                 onClick={handleCloseNavMenu}
                 style={{ margin: 2, color: "#000", display: "block" }}
               >
-                {page}
+                {page.name}
               </Link>
             ))}
           </Box>

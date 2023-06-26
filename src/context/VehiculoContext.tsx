@@ -198,7 +198,7 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
     try {
       const { data, error } = await supabase
         .from("Vehiculo")
-        .select()
+        .select("*, Marca(*)")
         .eq("id", id)
         .single();
 

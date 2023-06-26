@@ -30,10 +30,18 @@ export interface IVehiculo {
 
 export interface IVehiculoRequest extends IVehiculo {
   imagenes: string[];
+  Marca?: {
+    nombre: string;
+    imagen: string;
+    estado: boolean;
+    codigo: string;
+    id: number;
+  };
 }
 
 export interface IVehiculoResponse extends IVehiculo {
   Marca: {
     nombre: string;
   };
+  imagenes: string[];
 }

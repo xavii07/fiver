@@ -34,7 +34,7 @@ const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculoResponse }) => {
         <CardMedia
           sx={{ width: 400 }}
           component="img"
-          image={`${vehiculo.imagenes[0]}`}
+          image={`${vehiculo?.imagenes[0]}`}
           alt="Paella dish"
         />
       </div>

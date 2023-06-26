@@ -1,0 +1,27 @@
+.header_titulo {
+  height: 200px;
+  width: 100vw !important;
+  background: #1f4037;
+  background: linear-gradient(
+      to right,
+      rgba(153, 242, 200, 0.996),
+      rgba(31, 64, 55, 0.523)
+    ),
+    url("/public/breadcrumbleft.png");
+  background-position: center center;
+  background-repeat: space;
+  background-blend-mode: color-burn;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.titulo {
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+}
