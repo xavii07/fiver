@@ -3,7 +3,7 @@ import { customizeErrorMessages, supabase } from "../supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { RUTAS_PRIVADAS } from "../router/router";
-import { IVehiculo } from "../interfaces/vehiculo";
+import { IVehiculo, IVehiculoResponse } from "../interfaces/vehiculo";
 
 interface VehiculoProviderProps {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ interface VehiculoProviderProps {
 
 export interface VehiculoContextProps {
   isloading: boolean;
-  vehiculos: IVehiculo[];
+  vehiculos: IVehiculoResponse[];
   editvehiculo: IVehiculo;
   getVehiculos: () => Promise<void>;
   createVehiculo: (vehiculo: IVehiculo) => Promise<void>;
@@ -52,7 +52,7 @@ export const VehiculoContext = createContext<VehiculoContextProps>({
 export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
   children,
 }) => {
-  const [vehiculos, setVehiculos] = useState<IVehiculo[]>([]);
+  const [vehiculos, setVehiculos] = useState<IVehiculoResponse[]>([]);
   const [isloading, setIsloading] = useState<boolean>(false);
   const [editvehiculo, setEditvehiculo] = useState<IVehiculo>({} as IVehiculo);
   const navigation = useNavigate();
@@ -76,7 +76,7 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
       if (error) {
         throw error.message;
       }
-      setVehiculos(data as IVehiculo[]);
+      setVehiculos(data as IVehiculoResponse[]);
     } catch (error) {
       console.log(error);
       toast.error("Error al obtener los vehiculos");

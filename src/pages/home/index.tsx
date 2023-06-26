@@ -13,6 +13,10 @@ const HomePage = () => {
   const { vehiculos } = useVehiculos();
   const { marcas } = useMarcas();
   const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState({
+    marca: "",
+    minPriceHour: 0,
+  });
 
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -24,10 +28,24 @@ const HomePage = () => {
   const filteredVehiculos = (): IVehiculo[] => {
     const startIndex = (page - 1) * 5;
     const endIndex = startIndex + 5;
-    return vehiculos.slice(startIndex, endIndex);
+
+    const filterV = vehiculos.filter((vehiculo) => {
+      return (
+        +`${vehiculo?.precioHora}` >= filters.minPriceHour &&
+        (filters.marca === "" ||
+          vehiculo?.Marca?.nombre.toUpperCase() === filters.marca.toUpperCase())
+      );
+    });
+
+    return filterV.slice(startIndex, endIndex);
   };
 
-  const totalPages = Math.ceil(vehiculos.length / 5);
+  let totalPages: number;
+  if (filters.marca === "" && filters.minPriceHour === 0) {
+    totalPages = Math.ceil(vehiculos.length / 5);
+  } else {
+    totalPages = Math.ceil(filteredVehiculos().length / 5);
+  }
 
   return (
     <Container maxWidth={false} style={{ paddingLeft: 0, paddingRight: 0 }}>
