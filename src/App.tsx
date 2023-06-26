@@ -3,14 +3,14 @@ import LoginPage from "./pages/login";
 import RouterLayout from "./components/RouterLayout";
 import { RUTAS_PRIVADAS, RUTAS_PUBLICAS } from "./router/router";
 import { Suspense, lazy } from "react";
-import HomePage from "./pages/home";
 const RegistroVehiculoPage = lazy(() => import("./pages/registroVehiculo"));
 const VehiculosPage = lazy(() => import("./pages/vehiculos"));
 const MarcasPage = lazy(() => import("./pages/marcas"));
 const RegistroMarcaPage = lazy(() => import("./pages/registroMarca"));
-import Loader from "./components/Loader";
-import VehiculoPage from "./pages/vehiculo";
+const HomePage = lazy(() => import("./pages/home"));
+const VehiculoPage = lazy(() => import("./pages/vehiculo"));
 import RegistroUsuarioPage from "./pages/registroUsuario";
+import Loader from "./components/Loader";
 
 function App() {
   return (
