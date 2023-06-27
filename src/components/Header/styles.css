@@ -5,13 +5,13 @@
       rgba(67, 67, 67, 0.399),
       rgba(0, 0, 0, 0.562)
     ),
-    url("./fondo.jpg");
+    url("https://zqntnjnwhjchamppgacx.supabase.co/storage/v1/object/public/productos/productos/fondo.jpg");
   background: linear-gradient(
       to bottom right,
       rgba(67, 67, 67, 0.567),
       rgba(0, 0, 0, 0.537)
     ),
-    url("./fondo.jpg");
+    url("https://zqntnjnwhjchamppgacx.supabase.co/storage/v1/object/public/productos/productos/fondo.jpg");
   background-size: cover;
   background-position: center;
   background-blend-mode: color-burn;
