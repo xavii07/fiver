@@ -223,7 +223,7 @@ const RegistroVehiculo: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Anio de fabricación"
+                label="Año de fabricación"
                 variant="outlined"
                 type="number"
                 placeholder="2021"
@@ -394,7 +394,7 @@ const RegistroVehiculo: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                label="Descripcion"
+                label="Descripción"
                 variant="outlined"
                 placeholder="Vehículo de lujo de la marca Lamborghini"
                 autoComplete="off"

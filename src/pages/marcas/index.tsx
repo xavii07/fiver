@@ -64,7 +64,7 @@ const MarcasPage: React.FC = () => {
       },
       {
         id: "codigo",
-        header: "Codigo",
+        header: "Código",
         accessorKey: "codigo",
         cell: ({
           cell,
@@ -175,7 +175,7 @@ const MarcasPage: React.FC = () => {
         variant="h5"
         sx={{ textTransform: "uppercase", marginTop: "2rem" }}
       >
-        Marcas de vehiculos
+        Marcas de vehículos
       </Typography>
       {isloading ? (
         <Loader />

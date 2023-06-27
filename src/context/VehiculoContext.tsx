@@ -12,8 +12,10 @@ interface VehiculoProviderProps {
 export interface VehiculoContextProps {
   isloading: boolean;
   vehiculos: IVehiculoResponse[];
+  vehiculosactivos: IVehiculoResponse[];
   editvehiculo: IVehiculo;
   getVehiculos: () => Promise<void>;
+  getVehiculosActivos: () => Promise<void>;
   createVehiculo: (vehiculo: IVehiculo) => Promise<void>;
   updateEstadoVehiculo: (id: number, estado: boolean) => Promise<void>;
   getVehiculoById: (id: number) => Promise<IVehiculo | undefined>;
@@ -24,9 +26,13 @@ export interface VehiculoContextProps {
 
 export const VehiculoContext = createContext<VehiculoContextProps>({
   vehiculos: [],
+  vehiculosactivos: [],
   isloading: false,
   editvehiculo: {} as IVehiculo,
   getVehiculos: async () => {
+    throw new Error("El contexto de marcas debe estar dentro del proveedor");
+  },
+  getVehiculosActivos: async () => {
     throw new Error("El contexto de marcas debe estar dentro del proveedor");
   },
   createVehiculo: async () => {
@@ -53,6 +59,9 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
   children,
 }) => {
   const [vehiculos, setVehiculos] = useState<IVehiculoResponse[]>([]);
+  const [vehiculosactivos, setVehiculosActivos] = useState<IVehiculoResponse[]>(
+    []
+  );
   const [isloading, setIsloading] = useState<boolean>(false);
   const [editvehiculo, setEditvehiculo] = useState<IVehiculo>({} as IVehiculo);
   const navigation = useNavigate();
@@ -77,6 +86,26 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
         throw error.message;
       }
       setVehiculos(data as IVehiculoResponse[]);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error al obtener los vehiculos");
+    } finally {
+      setIsloading(false);
+    }
+  };
+
+  const getVehiculosActivos = async (): Promise<void> => {
+    setIsloading(true);
+    try {
+      const { error, data } = await supabase
+        .from("Vehiculo")
+        .select("*, Marca(nombre)")
+        .eq("estado", true);
+
+      if (error) {
+        throw error.message;
+      }
+      setVehiculosActivos(data as IVehiculoResponse[]);
     } catch (error) {
       console.log(error);
       toast.error("Error al obtener los vehiculos");
@@ -253,6 +282,7 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
     <VehiculoContext.Provider
       value={{
         vehiculos,
+        vehiculosactivos,
         isloading,
         editvehiculo,
         getVehiculos,
@@ -262,6 +292,7 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
         updateVehiculo,
         subirImagenes,
         setEditvehiculo,
+        getVehiculosActivos,
       }}
     >
       {children}

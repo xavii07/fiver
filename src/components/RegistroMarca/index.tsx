@@ -74,7 +74,7 @@ const RegistroMarca: React.FC = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
               <TextField
-                label="Codigo"
+                label="Código"
                 value={values.codigo}
                 name="codigo"
                 onChange={handleChange}
@@ -92,7 +92,7 @@ const RegistroMarca: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
-                label="Marca"
+                label="Nombre"
                 value={values.nombre}
                 name="nombre"
                 onChange={handleChange}

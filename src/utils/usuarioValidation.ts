@@ -5,7 +5,7 @@ export const usuarioValidation = yup.object().shape({
     .string()
     .matches(
       /^[0-9]{10}$/,
-      "La cedula debe tener exactamente 10 dígitos numéricos"
+      "La cédula debe tener exactamente 10 dígitos numéricos"
     )
     .required("La cédula es obligatoria"),
   nombres: yup

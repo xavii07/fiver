@@ -210,7 +210,7 @@ const VehiculosPage: React.FC = () => {
         variant="h5"
         sx={{ textTransform: "uppercase", marginTop: "2rem" }}
       >
-        Vehiculos fiver
+        vehículos fiver
       </Typography>
       {isloading ? (
         <Loader />
@@ -220,7 +220,7 @@ const VehiculosPage: React.FC = () => {
             columns={columns}
             data={data}
             totalData={totalData}
-            nombre="Vehiculos"
+            nombre="Vehículos"
           />
           <div
             style={{ width: "100%", marginTop: "2rem", paddingBottom: "4rem" }}

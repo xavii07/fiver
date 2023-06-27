@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import AdbIcon from "@mui/icons-material/Adb";
+import BluetoothDriveIcon from "@mui/icons-material/BluetoothDrive";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MouseEvent, useState } from "react";
 import { Link } from "react-router-dom";
@@ -23,7 +23,7 @@ const pages = [
     path: "/",
   },
   {
-    name: "Vehiculos",
+    name: "Vehículos",
     path: "/admin/vehiculos",
   },
   {
@@ -49,7 +49,9 @@ const Navbar: React.FC = () => {
     <AppBar position="sticky" sx={{ background: "#fff", boxShadow: "0" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <BluetoothDriveIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -108,7 +110,9 @@ const Navbar: React.FC = () => {
             </Menu>
           </Box>
 
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <BluetoothDriveIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
           <Typography
             variant="h5"
             noWrap
@@ -148,7 +152,7 @@ const Navbar: React.FC = () => {
           <Grid item>
             <Stack direction="row" spacing={1}>
               <Button variant="contained" onClick={() => navigate("/login")}>
-                Iniciar Sesion
+                Iniciar Sesión
               </Button>
             </Stack>
           </Grid>

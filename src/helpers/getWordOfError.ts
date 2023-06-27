@@ -1,11 +1,8 @@
 export const getWordOfError = (error: string) => {
-  console.log("error", error);
-  const errorSplit = error.split("=").pop();
-  if (errorSplit) {
-    const splitWord = errorSplit.split(")");
-    if (splitWord.length >= 1) {
-      const value = splitWord[0].trim();
-      return value.slice(1);
-    }
+  const errorSplit = error.split(" ").pop();
+  const erro = errorSplit?.split("_");
+  const errorPalabra = `${erro?.[1]}`;
+  if (errorPalabra) {
+    return errorPalabra.toUpperCase();
   }
 };

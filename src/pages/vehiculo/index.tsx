@@ -115,7 +115,7 @@ const VehiculoPage: React.FC = () => {
             <img src={vehiculo?.Marca?.imagen} width={140} height={100} />
           </div>
           <Divider>
-            <Chip label="Descripcion" />
+            <Chip label="Descripción" />
           </Divider>
           <p style={{ fontSize: "0.9rem" }}>{vehiculo.descripcion}</p>
           <Divider>
@@ -141,7 +141,7 @@ const VehiculoPage: React.FC = () => {
             <IconoCaracteristicas
               imagen={transmision}
               subtitulo={vehiculo.transmision}
-              titulo="Transmision"
+              titulo="Transmisión"
             />
             <IconoCaracteristicas
               imagen={color}
@@ -214,7 +214,7 @@ const VehiculoPage: React.FC = () => {
             {vehiculo.camaraReversa && (
               <IconoCaracteristicas
                 imagen={camaraReversa}
-                subtitulo="Camara Reversa"
+                subtitulo="Cámara Reversa"
               />
             )}
             {vehiculo.neblineros && (

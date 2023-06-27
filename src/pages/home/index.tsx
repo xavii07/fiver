@@ -1,22 +1,32 @@
-import { Button, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import HeaderComponent from "../../components/Header";
 import { useVehiculos } from "../../hooks/useVehiculos";
 import { IVehiculo, IVehiculoResponse } from "../../interfaces/vehiculo";
 import { useMarcas } from "../../hooks/useMarcas";
 import CardVehiculo from "../../components/CardVehiculo";
 import PaginationPage from "../../components/PaginationPage";
-import { useState } from "react";
-import SliderFilter from "../../components/SliderFilter";
-import MarcasSelectFilter from "../../components/MarcasSelectFilter";
+import { useCallback, useEffect, useState } from "react";
+import Filters from "../../components/Filters";
+import "./styles.css";
 
 const HomePage = () => {
-  const { vehiculos } = useVehiculos();
+  const { vehiculosactivos, getVehiculosActivos } = useVehiculos();
   const { marcas } = useMarcas();
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState({
     marca: "",
     minPriceHour: 0,
+    minPriceDay: 0,
   });
+
+  useEffect(() => {
+    memorizedGetVehiculos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const memorizedGetVehiculos = useCallback(() => {
+    getVehiculosActivos();
+  }, [getVehiculosActivos]);
 
   const handleChangePage = (
     _event: React.ChangeEvent<unknown>,
@@ -29,9 +39,10 @@ const HomePage = () => {
     const startIndex = (page - 1) * 5;
     const endIndex = startIndex + 5;
 
-    const filterV = vehiculos.filter((vehiculo) => {
+    const filterV = vehiculosactivos.filter((vehiculo) => {
       return (
         +`${vehiculo?.precioHora}` >= filters.minPriceHour &&
+        +`${vehiculo?.precioDia}` >= filters.minPriceDay &&
         (filters.marca === "" ||
           vehiculo?.Marca?.nombre.toUpperCase() === filters.marca.toUpperCase())
       );
@@ -41,11 +52,36 @@ const HomePage = () => {
   };
 
   let totalPages: number;
-  if (filters.marca === "" && filters.minPriceHour === 0) {
-    totalPages = Math.ceil(vehiculos.length / 5);
+  if (
+    filters.marca === "" &&
+    filters.minPriceHour === 0 &&
+    filters.minPriceDay === 0
+  ) {
+    totalPages = Math.ceil(vehiculosactivos.length / 5);
   } else {
     totalPages = Math.ceil(filteredVehiculos().length / 5);
   }
+
+  const vehiculoMaxPriceByHour = vehiculosactivos.reduce(
+    (prev, current) => {
+      const prevPrecioHora = +`${prev.precioHora}`;
+      const currentPrecioHora = +`${current.precioHora}`;
+      return prevPrecioHora > currentPrecioHora ? prev : current;
+    },
+    { precioHora: 0 } as IVehiculo
+  );
+
+  const vehiculoMaxPriceByDay = vehiculosactivos.reduce(
+    (prev, current) => {
+      const prevPrecioDia = +`${prev.precioDia}`;
+      const currentPrecioDia = +`${current.precioDia}`;
+      return prevPrecioDia > currentPrecioDia ? prev : current;
+    },
+    { precioDia: 0 } as IVehiculo
+  );
+
+  const maxPriceByHour = vehiculoMaxPriceByHour.precioHora;
+  const maxPriceByDay = vehiculoMaxPriceByDay.precioDia;
 
   return (
     <Container maxWidth={false} style={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -53,12 +89,11 @@ const HomePage = () => {
         title="FIVER"
         description="¡Descubre la libertad sobre ruedas con FIVER! Sigue navegando y encuentra el vehículo perfecto para crear tus propios caminos y vivir aventuras sin límites."
         element={
-          <Button
-            variant="outlined"
-            sx={{ color: "#fff", borderColor: "#fff" }}
-          >
-            Ingresar
-          </Button>
+          <div className="arrow">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         }
       />
       <Container>
@@ -93,15 +128,23 @@ const HomePage = () => {
       <Container
         style={{
           display: "flex",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
           marginTop: "3rem",
           border: "1px solid #ccc",
-          padding: "1rem",
+          paddingTop: "1rem",
+          paddingBottom: "1rem",
+          borderRadius: "0.5rem",
+          paddingLeft: "2rem",
+          paddingRight: "2rem",
           alignItems: "center",
         }}
       >
-        <SliderFilter />
-        <MarcasSelectFilter marcas={marcas} />
+        <Filters
+          marcas={marcas}
+          setFilters={setFilters}
+          maxPriceByHour={+`${maxPriceByHour}`}
+          maxPriceByDay={+`${maxPriceByDay}`}
+        />
       </Container>
       <Container style={{ marginBottom: "5rem", marginTop: "5rem" }}>
         {filteredVehiculos().map((vehiculo: IVehiculo) => (

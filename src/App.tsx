@@ -29,12 +29,12 @@ function App() {
             path={RUTAS_PRIVADAS.REGISTRO_MARCA}
             element={<RegistroMarcaPage />}
           />
+          <Route
+            path={RUTAS_PUBLICAS.REGISTRO_USUARIO}
+            element={<RegistroUsuarioPage />}
+          />
+          <Route path={RUTAS_PUBLICAS.LOGIN} element={<LoginPage />} />
         </Route>
-        <Route
-          path={RUTAS_PUBLICAS.REGISTRO_USUARIO}
-          element={<RegistroUsuarioPage />}
-        />
-        <Route path={RUTAS_PUBLICAS.LOGIN} element={<LoginPage />} />
       </Routes>
     </Suspense>
   );

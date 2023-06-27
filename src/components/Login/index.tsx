@@ -54,7 +54,7 @@ const Login: React.FC = () => {
             }}
           >
             <Box>
-              <Titulo>Iniciar Sesion</Titulo>
+              <Titulo>Iniciar Sesión</Titulo>
               <Typography variant="h6" sx={{ mb: 2, color: "#bbb" }}>
                 (FIVER)
               </Typography>
@@ -65,7 +65,7 @@ const Login: React.FC = () => {
                 autoComplete="off"
                 margin="normal"
                 fullWidth
-                label="Correo Electronico"
+                label="Correo Electrónico"
                 sx={{ mt: 2, mb: 1.5 }}
                 value={formik.values.email}
                 onChange={formik.handleChange}
@@ -92,14 +92,14 @@ const Login: React.FC = () => {
                 sx={{ mt: 1.5, mb: 3, py: 1.5 }}
                 type="submit"
               >
-                Iniciar Sesion
+                Iniciar Sesión
               </Button>
               <p style={{ margin: 0 }}>¿No tienes una cuenta?</p>
               <Link
                 to={RUTAS_PUBLICAS.REGISTRO_USUARIO}
                 style={{ textDecoration: "none" }}
               >
-                Registrate
+                Regístrate
               </Link>
             </Box>
           </Paper>

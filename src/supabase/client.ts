@@ -7,11 +7,11 @@ export const supabase = createClient(
 );
 
 export const customizeErrorMessages = (error: any) => {
-  if (error?.details) {
-    const palabra = getWordOfError(error?.details);
+  if (error?.message) {
+    const palabra = getWordOfError(error?.message);
     //TODO:  Verificar el tipo de error que quieres personalizar
     if (error?.code === "23505") {
-      return `El campo ${palabra} ya existe en la base de datos.`;
+      return ` El texto ingresado en el campo ${palabra} ya existe en la base de datos.`;
     } else if (error?.code === "23502") {
       return `El campo ${palabra} es requerido.`;
     } else if (error?.code === "22P02") {

@@ -19,15 +19,17 @@ import MessageErr from "../MessageError";
 import { categoriaLicencia, initialValues, provincias } from "./values";
 
 import { IUsuarioRegistro } from "../../interfaces/usuario";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RUTAS_PUBLICAS } from "../../router/router";
 import { usuarioValidation } from "../../utils/usuarioValidation";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { supabase } from "../../supabase/client";
+import { toast } from "sonner";
 
 const RegistroUsuario: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -54,7 +56,13 @@ const RegistroUsuario: React.FC = () => {
 
     if (error) {
       console.log(error);
+      toast.error("Error al registrar usuario");
       return;
+    } else {
+      toast.success(
+        "Usuario registrado correctamente, le hemos enviado un correo de confirmación  para que pueda activar su cuenta."
+      );
+      navigate(RUTAS_PUBLICAS.LOGIN);
     }
 
     console.log(data);
@@ -78,7 +86,7 @@ const RegistroUsuario: React.FC = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
               <TextField
-                label="Cedula"
+                label="Cédula"
                 value={values.cedula}
                 name="cedula"
                 onChange={handleChange}
@@ -192,7 +200,7 @@ const RegistroUsuario: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
-                label="Direccion"
+                label="Dirección"
                 value={values.direccion}
                 name="direccion"
                 onChange={handleChange}
@@ -211,7 +219,7 @@ const RegistroUsuario: React.FC = () => {
             <Grid item xs={12} sm={4}>
               <TextField
                 select
-                label="Categoria Licencia"
+                label="Categoría Licencia"
                 size="small"
                 name="categoriaLicencia"
                 onChange={handleChange}
@@ -279,7 +287,7 @@ const RegistroUsuario: React.FC = () => {
             <Grid item xs={12} sm={4}>
               <TextField
                 type="email"
-                label="Correo Electronico"
+                label="Correo Electrónico"
                 value={values.correoElectronico}
                 name="correoElectronico"
                 onChange={handleChange}
@@ -349,7 +357,7 @@ const RegistroUsuario: React.FC = () => {
                 to={RUTAS_PUBLICAS.LOGIN}
                 style={{ textDecoration: "none" }}
               >
-                Iniciar Sesion
+                Iniciar Sesión
               </Link>
             </Grid>
           </Grid>
