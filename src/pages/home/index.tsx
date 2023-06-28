@@ -146,7 +146,14 @@ const HomePage = () => {
           maxPriceByDay={+`${maxPriceByDay}`}
         />
       </Container>
-      <Container style={{ marginBottom: "5rem", marginTop: "5rem" }}>
+      <Container style={{ marginBottom: "8rem", marginTop: "4rem" }}>
+        {totalPages > 1 && (
+          <PaginationPage
+            page={page}
+            handleChangePage={handleChangePage}
+            totalPages={totalPages}
+          />
+        )}
         {filteredVehiculos().map((vehiculo: IVehiculo) => (
           <div key={vehiculo.id}>
             <CardVehiculo vehiculo={vehiculo as IVehiculoResponse} />

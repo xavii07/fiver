@@ -13,7 +13,7 @@ const PaginationPage: React.FC<propsPagination> = ({
   totalPages,
 }) => {
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} style={{ marginBottom: "2rem" }}>
       <Pagination
         count={totalPages}
         page={page}
