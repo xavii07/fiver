@@ -14,3 +14,10 @@ Aplicacion web para la empresa FIVER - Frontend React - Supabase
   `pnpm run dev`
 - #### Abrir un navegador
   http://localhost:5173
+  - /admin/vehiculos
+  - /admin/vehiculos/registro
+  - /admin/marcas
+  - /admin/marcas/registro
+  - /vehiculos/5
+  - /login
+  - /registro
