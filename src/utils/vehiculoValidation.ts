@@ -30,14 +30,15 @@ export const vehiculoValidation = yup.object().shape({
   motorHp: yup
     .string()
     .required("El motor es requerido")
-    .max(5, "El máximo de caracteres es 5")
+    .max(4, "El máximo de caracteres es 4")
     .min(2, "El mínimo de caracteres es 2"),
   cilindros: yup
     .number()
-    .typeError("El numero de pasajeros tiene que ser numérico")
-    .required("El numero de pasajeros es requerido")
-    .positive("El numero de pasajeros debe ser positivo")
-    .integer("El numero de pasajeros debe ser un numero entero"),
+    .typeError("El numero de cilindros tiene que ser numérico")
+    .required("El numero de cilindros es requerido")
+    .positive("El numero de cilindros debe ser positivo")
+    .integer("El numero de cilindros debe ser un numero entero")
+    .max(20, "El numero de cilindros debe ser menor o igual a 20"),
   pasajeros: yup
     .number()
     .typeError("El numero de pasajeros tiene que ser numérico")
@@ -60,12 +61,8 @@ export const vehiculoValidation = yup.object().shape({
     .number()
     .positive("El precio por hora debe ser positivo")
     .max(100, "El precio por hora debe ser menor o igual a 100")
+    .min(10, "El precio por hora debe ser mayor o igual a 10")
     .required("El precio por hora es requerido"),
-  precioDia: yup
-    .number()
-    .positive("El precio por dia debe ser positivo")
-    .max(1000, "El precio por dia debe ser menor o igual a 1000")
-    .required("El precio por dia es requerido"),
   imagenes: yup
     .mixed()
     .test("fileSize", "El tamaño del archivo es demasiado grande", (value) => {

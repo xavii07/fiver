@@ -49,7 +49,7 @@ const RegistroMarca: React.FC = () => {
       ) {
         const data = await subirImagen(values.imagen[0]);
         const imagenUrl = `${import.meta.env.VITE_URL_IMAGEN}${data.path}`;
-        createMarca(values.nombre, values.codigo, imagenUrl);
+        createMarca(values.nombre.toLowerCase(), values.codigo, imagenUrl);
       }
     }
   };

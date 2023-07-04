@@ -19,6 +19,7 @@ import { useMarcas } from "../../hooks/useMarcas";
 import "./styles.css";
 import { useVehiculos } from "../../hooks/useVehiculos";
 import { IVehiculo } from "../../interfaces/vehiculo";
+import { getPrecioDay } from "../../helpers/getPrecioDay";
 
 interface FormValues {
   files: FileList | undefined;
@@ -98,6 +99,7 @@ const RegistroVehiculo: React.FC = () => {
       initialValues={initialValues}
       validationSchema={vehiculoValidation}
       onSubmit={async (values) => {
+        values.precioDia = getPrecioDay(values.precioHora as number);
         if (Object.keys(editvehiculo).length !== 0) {
           if (values.imagenes && values.imagenes.length > 0 && values.placa) {
             const images = values.imagenes;
@@ -682,19 +684,14 @@ const RegistroVehiculo: React.FC = () => {
               <TextField
                 label="Precio por dia"
                 variant="outlined"
+                disabled
                 type="number"
-                placeholder="150"
                 fullWidth
                 size="small"
                 name="precioDia"
                 onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.precioDia || ""}
-                error={errors.precioDia && touched.precioDia ? true : false}
+                value={getPrecioDay(+`${values.precioHora}`) || ""}
               />
-              <ErrorMessage name="precioDia">
-                {(msg) => <MessageErr message={msg} />}
-              </ErrorMessage>
             </Grid>
             <Grid item xs={12} sm={12}></Grid>
 

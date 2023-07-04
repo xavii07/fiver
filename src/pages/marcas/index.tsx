@@ -63,22 +63,6 @@ const MarcasPage: React.FC = () => {
         ),
       },
       {
-        id: "codigo",
-        header: "Código",
-        accessorKey: "codigo",
-        cell: ({
-          cell,
-        }: {
-          cell: {
-            getValue: () => string;
-          };
-        }) => (
-          <Typography variant="body1" sx={{ textAlign: "center" }}>
-            {cell.getValue()}
-          </Typography>
-        ),
-      },
-      {
         id: "nombre",
         header: "Nombre",
         accessorKey: "nombre",
@@ -90,7 +74,8 @@ const MarcasPage: React.FC = () => {
           };
         }) => (
           <Typography variant="body1" sx={{ textAlign: "center" }}>
-            {cell.getValue()}
+            {cell.getValue().slice(0, 1).toUpperCase() +
+              cell.getValue().slice(1)}
           </Typography>
         ),
       },
