@@ -3,21 +3,49 @@ import * as yup from "yup";
 export const usuarioValidation = yup.object().shape({
   cedula: yup
     .string()
-    .matches(
-      /^[0-9]{10}$/,
-      "La cédula debe tener exactamente 10 dígitos numéricos"
+    .test(
+      "validar-cedula",
+      "Este campo solo admite 10 números, no puede contener solo ceros y no debe tener números repetidos",
+      (value) => {
+        if (/^0{10}$/.test(`${value}`)) {
+          return false;
+        }
+        if (!/^\d{10}$/.test(`${value}`)) {
+          return false;
+        }
+        if (/(\d)\1{9}/.test(`${value}`)) {
+          return false;
+        }
+        return true;
+      }
     )
     .required("La cédula es obligatoria"),
   nombres: yup
     .string()
     .required("El campo nombres es requerido")
     .max(50, "El máximo de caracteres es 50")
-    .min(5, "El mínimo de caracteres es 5"),
+    .min(5, "El mínimo de caracteres es 5")
+    .matches(/^[a-zA-Z\s]*$/, "Este campo solo admite letras")
+    .test("dos-nombres", "Debes ingresar dos nombres", (value) => {
+      if (value) {
+        const nombres = value.trim().split(" ");
+        return nombres.length === 2;
+      }
+      return false;
+    }),
   apellidos: yup
     .string()
     .required("El campo apellidos es requerido")
     .max(50, "El máximo de caracteres es 50")
-    .min(5, "El mínimo de caracteres es 5"),
+    .min(5, "El mínimo de caracteres es 5")
+    .matches(/^[a-zA-Z\s]*$/, "Este campo solo admite letras")
+    .test("dos-apellidos", "Debes ingresar dos apellidos", (value) => {
+      if (value) {
+        const nombres = value.trim().split(" ");
+        return nombres.length === 2;
+      }
+      return false;
+    }),
   fechaNacimiento: yup
     .string()
     .required("La fecha de nacimiento es obligatoria")
