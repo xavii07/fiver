@@ -9,6 +9,7 @@ const MarcasPage = lazy(() => import("./pages/marcas"));
 const RegistroMarcaPage = lazy(() => import("./pages/registroMarca"));
 const HomePage = lazy(() => import("./pages/home"));
 const VehiculoPage = lazy(() => import("./pages/vehiculo"));
+const ReservaPage = lazy(() => import("./pages/reserva"));
 import RegistroUsuarioPage from "./pages/registroUsuario";
 import Loader from "./components/Loader";
 
@@ -23,6 +24,7 @@ function App() {
             path={RUTAS_PRIVADAS.REGISTRO_VEHICULO}
             element={<RegistroVehiculoPage />}
           />
+          <Route path={RUTAS_PRIVADAS.RESERVA} element={<ReservaPage />} />
           <Route path={RUTAS_PRIVADAS.VEHICULOS} element={<VehiculosPage />} />
           <Route path={RUTAS_PRIVADAS.MARCAS} element={<MarcasPage />} />
           <Route

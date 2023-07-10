@@ -6,18 +6,22 @@ import { Toaster } from "sonner";
 import { MarcaProvider } from "./context/MarcaContext.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { VehiculoProvider } from "./context/VehiculoContext.tsx";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <VehiculoProvider>
-        <MarcaProvider>
-          <Toaster position="top-center" richColors />
-          <ThemeConfig>
-            <App />
-          </ThemeConfig>
-        </MarcaProvider>
-      </VehiculoProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <VehiculoProvider>
+          <MarcaProvider>
+            <Toaster position="top-center" richColors />
+            <ThemeConfig>
+              <App />
+            </ThemeConfig>
+          </MarcaProvider>
+        </VehiculoProvider>
+      </LocalizationProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

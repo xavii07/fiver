@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useVehiculos } from "../../hooks/useVehiculos";
 import { useEffect, useState } from "react";
 import { initialValues } from "../../components/RegistroVehiculo/values";
@@ -25,6 +25,7 @@ import pasajeros from "../../../public/pasajeros.png";
 import puertas from "../../../public/pueta.png";
 import tipo from "../../../public/tipoauto.png";
 import transmision from "../../../public/transmision.png";
+import { RUTAS_PRIVADAS } from "../../router/router";
 
 const VehiculoPage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -100,7 +101,17 @@ const VehiculoPage: React.FC = () => {
             fullWidth
             sx={{ marginTop: "2rem" }}
           >
-            Reservar
+            <Link
+              style={{
+                color: "#fff",
+                textDecoration: "none",
+                fontSize: "1rem",
+                width: "100%",
+              }}
+              to={RUTAS_PRIVADAS.RESERVA}
+            >
+              Reservar
+            </Link>
           </Button>
         </div>
         <div>

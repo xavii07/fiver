@@ -13,4 +13,5 @@ export const RUTAS_PRIVADAS = {
   REGISTRO_VEHICULO: "/admin/vehiculos/registro",
   MARCAS: "/admin/marcas",
   REGISTRO_MARCA: "/admin/marcas/registro",
+  RESERVA: "/cliente/reserva",
 };
