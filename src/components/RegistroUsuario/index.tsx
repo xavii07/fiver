@@ -46,11 +46,7 @@ const RegistroUsuario: React.FC = () => {
       password: values.contrasena,
       phone: values.celular,
       options: {
-        data: {
-          first_name: "John",
-          last_name: "Doe",
-          age: 27,
-        },
+        data: values,
       },
     });
 
@@ -64,8 +60,6 @@ const RegistroUsuario: React.FC = () => {
       );
       navigate(RUTAS_PUBLICAS.LOGIN);
     }
-
-    console.log(data);
   };
 
   return (

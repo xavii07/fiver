@@ -30,6 +30,10 @@ const pages = [
     name: "Marcas",
     path: "/admin/marcas",
   },
+  {
+    name: "Perfil",
+    path: "/admin",
+  },
 ];
 
 const Navbar: React.FC = () => {

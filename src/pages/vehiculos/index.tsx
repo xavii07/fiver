@@ -16,6 +16,7 @@ interface VehiculoRowTable {
   original: {
     id: number;
     estado: boolean;
+    reservado: boolean;
   };
 }
 
@@ -152,12 +153,44 @@ const VehiculosPage: React.FC = () => {
             }}
           >
             {JSON.stringify(cell.getValue()) === "true" ? (
-              <span style={{ background: "green", padding: "0.4rem" }}>
+              <span style={{ background: "#00ad45", padding: "0.2rem" }}>
                 Activo
               </span>
             ) : (
-              <span style={{ background: "red", padding: "0.4rem" }}>
+              <span style={{ background: "red", padding: "0.2rem" }}>
                 Inactivo
+              </span>
+            )}
+          </Typography>
+        ),
+      },
+      {
+        id: "reservado",
+        header: "Reservado",
+        accessorKey: "reservado",
+        cell: ({
+          cell,
+        }: {
+          cell: {
+            getValue: () => string;
+          };
+        }) => (
+          <Typography
+            variant="body1"
+            sx={{
+              color: "#fff",
+              fontSize: "0.7rem",
+              textAlign: "center",
+              padding: "0.2rem 0.5rem",
+            }}
+          >
+            {JSON.stringify(cell.getValue()) === "true" ? (
+              <span style={{ background: "#ffaaaa", padding: "0.2rem" }}>
+                Reservado
+              </span>
+            ) : (
+              <span style={{ background: "#003666", padding: "0.2rem" }}>
+                Disponible
               </span>
             )}
           </Typography>
@@ -177,8 +210,9 @@ const VehiculosPage: React.FC = () => {
               <IconPencilPlus size={18} color={"#7552cc"} />
             </button>
             <button
-              className="bg-transparent icon"
+              className="bg-transparent icon boton-estado"
               type="button"
+              disabled={row.original.reservado}
               onClick={() =>
                 handleUpdateEstado(row.original.id, row.original.estado)
               }

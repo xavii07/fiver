@@ -25,12 +25,12 @@ const ReservaComponent: React.FC = () => {
 
   const steps = [
     {
-      label: "Seleccionar Fecha y Hora",
-      component: <FechaReserva />,
+      label: "Selecciona tu ",
+      component: <ComponentePaso2 />,
     },
     {
-      label: "Vehiculo y Extras",
-      component: <ComponentePaso2 />,
+      label: "Seleccionar Fecha y Hora",
+      component: <FechaReserva />,
     },
     {
       label: "Pago",

@@ -59,7 +59,7 @@ const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculoResponse }) => {
                 <p
                   style={{ marginTop: 0, marginBottom: 0, marginLeft: "1rem" }}
                 >
-                  {vehiculo.anio} - {vehiculo?.Marca.nombre}
+                  {vehiculo.anio} - {vehiculo?.Marca?.nombre}
                 </p>
               </div>
               <div

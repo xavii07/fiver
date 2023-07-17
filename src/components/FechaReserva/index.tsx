@@ -1,35 +1,17 @@
 import "./styles.css";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import React, { useState } from "react";
 
 const FechaReserva: React.FC = () => {
-  const [dateinicio, setDateInicio] = useState<string>("");
-  const [datefin, setDateFin] = useState<string>("");
-  const today = dayjs();
+  const [dateinicio, setDateInicio] = useState<Dayjs | null>(null);
+  const [datefin, setDateFin] = useState<Dayjs | null>(null);
+
   const inicioTime = dayjs().set("hour", 7).startOf("hour");
   const finTime = dayjs().set("hour", 22).startOf("hour");
 
-  const handleDateInicioChange = (newValue: Date | null) => {
-    if (newValue) {
-      const formattedDate = dayjs(newValue).format("YYYY/MM/DD");
-      setDateInicio(formattedDate);
-    } else {
-      setDateInicio("");
-    }
-  };
-
-  const handleDateFinChange = (newValue: Date | null) => {
-    if (newValue) {
-      const formattedDate = dayjs(newValue).format("YYYY/MM/DD");
-      setDateFin(formattedDate);
-    } else {
-      setDateFin("");
-    }
-  };
-
-  console.log(dateinicio);
-  console.log(datefin);
+  console.log(dateinicio?.format("DD MM YYYY"));
+  console.log(datefin?.format("DD MM YYYY"));
 
   return (
     <div className="contenedor">
@@ -47,10 +29,9 @@ const FechaReserva: React.FC = () => {
 
         <DatePicker
           sx={{ width: "100%" }}
-          value={dateinicio ? dayjs(dateinicio).toDate() : null}
-          onChange={handleDateInicioChange}
-          defaultValue={today.toDate()}
+          value={dateinicio}
           disablePast
+          onChange={(newValue) => setDateInicio(newValue)}
         />
 
         <TimePicker
@@ -76,10 +57,11 @@ const FechaReserva: React.FC = () => {
         </p>
         <DatePicker
           sx={{ width: "100%" }}
-          value={datefin ? dayjs(datefin).toDate() : null}
-          onChange={handleDateFinChange}
-          defaultValue={today.toDate()}
           disablePast
+          minDate={dateinicio}
+          maxDate={dayjs(dateinicio?.toDate()).add(30, "day")}
+          value={datefin}
+          onChange={(newValue) => setDateFin(newValue)}
         />
 
         <TimePicker

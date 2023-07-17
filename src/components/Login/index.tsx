@@ -14,6 +14,8 @@ import imgLogin from "/login.png";
 import { Gridd, Imagen, Titulo } from "./style";
 import { Link } from "react-router-dom";
 import { RUTAS_PUBLICAS } from "../../router/router";
+import { supabase } from "../../supabase/client";
+import { toast } from "sonner";
 
 type LoginType = {
   email: string;
@@ -27,8 +29,18 @@ const Login: React.FC = () => {
       password: "",
     },
     validationSchema: loginValidation,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.success("Inicio de sesión exitoso");
+      console.log(data);
     },
   });
 
