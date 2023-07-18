@@ -16,10 +16,6 @@ const ComponentePaso2: React.FC = () => {
   );
 };
 
-const ComponentePaso3: React.FC = () => {
-  return <p>Paso 3</p>;
-};
-
 const ReservaComponent: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
 
@@ -53,7 +49,7 @@ const ReservaComponent: React.FC = () => {
   return (
     <Box sx={{ width: "100%" }}>
       <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map((step, index) => (
+        {steps.map((step) => (
           <Step key={step.label}>
             <StepLabel>{step.label}</StepLabel>
           </Step>
