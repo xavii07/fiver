@@ -1,4 +1,4 @@
-import { Route, Router, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/login";
 import RouterLayout from "./components/RouterLayout";
 import { RUTAS_PRIVADAS, RUTAS_PUBLICAS } from "./router/router";
