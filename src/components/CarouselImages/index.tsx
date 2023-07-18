@@ -6,8 +6,6 @@ interface IImagenes {
 }
 
 const CauruselImages: React.FC<IImagenes> = ({ imagenes = [] }) => {
-  console.log({ imagenes });
-
   return (
     <AliceCarousel
       animationType="slide"

@@ -30,6 +30,7 @@ export interface IVehiculo {
 
 export interface IVehiculoRequest extends IVehiculo {
   imagenes: string[];
+  reservado: boolean;
   Marca?: {
     nombre: string;
     imagen: string;
@@ -44,4 +45,5 @@ export interface IVehiculoResponse extends IVehiculo {
     nombre: string;
   };
   imagenes: string[];
+  reservado: boolean;
 }

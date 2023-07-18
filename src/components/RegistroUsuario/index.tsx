@@ -46,7 +46,19 @@ const RegistroUsuario: React.FC = () => {
       password: values.contrasena,
       phone: values.celular,
       options: {
-        data: values,
+        data: {
+          nombres: values.nombres,
+          apellidos: values.apellidos,
+          cedula: values.cedula,
+          correoElectronico: values.correoElectronico,
+          categoriaLicencia: values.categoriaLicencia,
+          direccion: values.direccion,
+          celular: values.celular,
+          provincia: values.provincia,
+          fechaNacimiento: values.fechaNacimiento,
+          sexo: values.sexo,
+          rol: "usuario",
+        },
       },
     });
 

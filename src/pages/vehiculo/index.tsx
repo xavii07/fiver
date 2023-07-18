@@ -33,6 +33,7 @@ const VehiculoPage: React.FC = () => {
   const [vehiculo, setVehiculo] = useState<IVehiculoRequest>({
     ...initialValues,
     imagenes: [],
+    reservado: false,
   });
   const [imagenes, setImagenes] = useState<string[]>([]);
 
@@ -99,6 +100,7 @@ const VehiculoPage: React.FC = () => {
             variant="contained"
             size="large"
             fullWidth
+            disabled={vehiculo?.reservado}
             sx={{ marginTop: "2rem" }}
           >
             <Link

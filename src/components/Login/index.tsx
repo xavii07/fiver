@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { RUTAS_PUBLICAS } from "../../router/router";
 import { supabase } from "../../supabase/client";
 import { toast } from "sonner";
+import useAuthContext from "../../context/LoginContext";
 
 type LoginType = {
   email: string;
@@ -23,6 +24,8 @@ type LoginType = {
 };
 
 const Login: React.FC = () => {
+  const { setIsAuth } = useAuthContext();
+
   const formik = useFormik<LoginType>({
     initialValues: {
       email: "",
@@ -30,7 +33,6 @@ const Login: React.FC = () => {
     },
     validationSchema: loginValidation,
     onSubmit: async (values) => {
-      console.log(values);
       const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
@@ -40,6 +42,7 @@ const Login: React.FC = () => {
         return;
       }
       toast.success("Inicio de sesión exitoso");
+      setIsAuth(true);
       console.log(data);
     },
   });

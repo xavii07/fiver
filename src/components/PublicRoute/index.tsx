@@ -1,12 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { RUTAS_PRIVADAS } from "../../router/router";
+import { RUTAS_PUBLICAS } from "../../router/router";
 import Navbar from "../Navbar";
+import useAuthContext from "../../context/LoginContext";
 
 const PublicRoute: React.FC = () => {
-  const isAuth = true;
+  const { isAuth } = useAuthContext();
 
   if (isAuth) {
-    return <Navigate to={RUTAS_PRIVADAS.HOME} />;
+    return <Navigate to={RUTAS_PUBLICAS.HOME} />;
   }
 
   return (

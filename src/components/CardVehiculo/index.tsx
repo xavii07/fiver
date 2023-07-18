@@ -105,6 +105,25 @@ const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculoResponse }) => {
                     Por Día
                   </p>
                 </div>
+                <div>
+                  <Chip
+                    component={"h1"}
+                    variant="filled"
+                    sx={{ color: "#fff", fontWeight: "400" }}
+                    color={vehiculo.reservado ? "error" : "primary"}
+                    label={vehiculo.reservado ? "Reservado" : "Disponible"}
+                  />
+                  <p
+                    style={{
+                      margin: 0,
+                      textAlign: "center",
+                      fontSize: "0.8rem",
+                      color: "#666",
+                    }}
+                  >
+                    {"-"}
+                  </p>
+                </div>
               </div>
             </div>
           )}

@@ -16,8 +16,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { MouseEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
+import useAuthContext from "../../context/LoginContext";
+import { supabase } from "../../supabase/client";
 
-const pages = [
+const pagesAdmin = [
   {
     name: "Inicio",
     path: "/",
@@ -36,8 +38,34 @@ const pages = [
   },
 ];
 
+const pagesUsuario = [
+  {
+    name: "Inicio",
+    path: "/",
+  },
+  {
+    name: "Perfil",
+    path: "/admin",
+  },
+  {
+    name: "Acerca de",
+    path: "/acerca-de",
+  },
+  {
+    name: "Contacto",
+    path: "/contacto",
+  },
+  {
+    name: "Vehículos",
+    path: "/admin/vehiculos",
+  },
+];
+const rol = "admin";
+const pages = rol === "admin" ? pagesAdmin : pagesUsuario;
+
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const { isAuth, setIsAuth } = useAuthContext();
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -47,6 +75,16 @@ const Navbar: React.FC = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleToggleAuth = () => {
+    if (!isAuth) {
+      navigate("/login");
+    } else {
+      supabase.auth.signOut();
+      setIsAuth(false);
+      localStorage.removeItem("sb-zqntnjnwhjchamppgacx-auth-token");
+    }
   };
 
   return (
@@ -155,8 +193,8 @@ const Navbar: React.FC = () => {
 
           <Grid item>
             <Stack direction="row" spacing={1}>
-              <Button variant="contained" onClick={() => navigate("/login")}>
-                Iniciar Sesión
+              <Button variant="contained" onClick={handleToggleAuth}>
+                {isAuth ? "Cerrar sesión" : "Iniciar sesión"}
               </Button>
             </Stack>
           </Grid>

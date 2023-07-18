@@ -1,13 +1,38 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
-const initialUser = JSON.parse(
-  localStorage.getItem("sb-zqntnjnwhjchamppgacx-auth-token") || "{}"
-);
+export interface Usuario {
+  apellidos: string;
+  categoriaLicencia: string;
+  cedula: string;
+  celular: string;
+  contrasena: string;
+  correoElectronico: string;
+  direccion: string;
+  fechaNacimiento: string;
+  nombres: string;
+  provincia: string;
+  sexo: string;
+}
 
 const AdminPage: React.FC = () => {
-  const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState<Usuario | null>(null);
 
-  console.log(user.user.user_metadata);
+  useLayoutEffect(() => {
+    const storedUser = JSON.parse(
+      localStorage.getItem("sb-zqntnjnwhjchamppgacx-auth-token") || "{}"
+    );
+
+    if (storedUser && Object.keys(storedUser).length > 0) {
+      setUser(storedUser?.user?.user_metadata);
+    }
+  }, []);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  console.log({ user });
+
   return (
     <div
       style={{
@@ -24,18 +49,17 @@ const AdminPage: React.FC = () => {
         <h3>
           Bienvenido:{" "}
           <span>
-            {user.user.user_metadata.nombres}{" "}
-            {user.user.user_metadata.apellidos}
+            {user?.nombres} {user?.apellidos}
           </span>
         </h3>
-        <p>Cedula: {user.user.user_metadata.cedula}</p>
-        <p>Correo Electronico: {user.user.user_metadata.correoElectronico}</p>
-        <p>Licencia Categoria: {user.user.user_metadata.categoriaLicencia}</p>
-        <p>Direccion: {user.user.user_metadata.direccion}</p>
-        <p>Celular: {user.user.user_metadata.celular}</p>
-        <p>Provincia: {user.user.user_metadata.provincia}</p>
-        <p>Sexo: {user.user.user_metadata.sexo}</p>
-        <p>Fecha Nacimiento: {user.user.user_metadata.fechaNacimiento}</p>
+        <p>Cedula: {user?.cedula}</p>
+        <p>Correo Electronico: {user?.correoElectronico}</p>
+        <p>Licencia Categoria: {user?.categoriaLicencia}</p>
+        <p>Direccion: {user?.direccion}</p>
+        <p>Celular: {user?.celular}</p>
+        <p>Provincia: {user?.provincia}</p>
+        <p>Sexo: {user?.sexo}</p>
+        <p>Fecha Nacimiento: {user?.fechaNacimiento}</p>
       </div>
       <div style={{ alignSelf: "center" }}>
         <img
