@@ -41,7 +41,7 @@ const RegistroUsuario: React.FC = () => {
   const handleSubmit = async (values: IUsuarioRegistro) => {
     console.log(values);
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: values.correoElectronico,
       password: values.contrasena,
       phone: values.celular,
