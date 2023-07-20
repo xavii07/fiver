@@ -1,9 +1,3 @@
-export interface IUsuario extends IUsuarioRegistro {
-  edad: number;
-  imagenUrl: string;
-  rol: string;
-}
-
 export interface IUsuarioLogin {
   correoElectronico: string;
   contrasena: string;
@@ -21,4 +15,5 @@ export interface IUsuarioRegistro {
   provincia: string;
   sexo: string;
   categoriaLicencia: string;
+  rol: string;
 }

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import useAuthContext from "../../context/LoginContext";
 
 export interface Usuario {
   apellidos: string;
@@ -15,6 +15,7 @@ export interface Usuario {
 }
 
 const AdminPage: React.FC = () => {
+  /*
   const [user, setUser] = useState<Usuario | null>(null);
 
   useLayoutEffect(() => {
@@ -29,7 +30,9 @@ const AdminPage: React.FC = () => {
 
   if (!user) {
     return <div>Loading...</div>;
-  }
+  }*/
+
+  const { user } = useAuthContext();
 
   console.log({ user });
 

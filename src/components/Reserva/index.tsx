@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -6,12 +6,46 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import FechaReserva from "../FechaReserva";
 import PagoPaypayComponent from "../PagoPaypal";
+import useAuthContext from "../../context/LoginContext";
+import { useParams } from "react-router-dom";
+import { useVehiculos } from "../../hooks/useVehiculos";
+import { initialValues } from "../../components/RegistroVehiculo/values";
+import { IVehiculoResponse } from "../../interfaces/vehiculo";
+import CardVehiculo from "../CardVehiculo";
 
 const ComponentePaso2: React.FC = () => {
+  const { user } = useAuthContext();
+
+  const { id } = useParams<{ id?: string }>();
+  const { getVehiculoById } = useVehiculos();
+  const [vehiculo, setVehiculo] = useState<IVehiculoResponse>({
+    ...initialValues,
+    imagenes: [],
+    Marca: {
+      nombre: "",
+    },
+    reservado: false,
+  });
+
+  useEffect(() => {
+    getVehiculoById(+`${id}`).then((vehiculo) => {
+      if (vehiculo) {
+        setVehiculo(vehiculo as IVehiculoResponse);
+      }
+    });
+  }, [getVehiculoById, id]);
+
   return (
     <div>
       <p>Paso 1</p>
-      <img src="https://picsum.photos/200/300" alt="random" />
+      <h1>DATOS DEL USUARIO</h1>
+      <p>{user.nombres}</p>
+      <p>{user.apellidos}</p>
+      <p>{user.cedula}</p>
+      <p>{user.correoElectronico}</p>
+      <p>{user.celular}</p>
+      <p>{user.provincia}</p>
+      <CardVehiculo vehiculo={vehiculo} />
     </div>
   );
 };
@@ -21,15 +55,15 @@ const ReservaComponent: React.FC = () => {
 
   const steps = [
     {
-      label: "Selecciona tu ",
-      component: <ComponentePaso2 />,
-    },
-    {
-      label: "Seleccionar Fecha y Hora",
+      label: "Seleccionar Fecha y Hora de su reserva",
       component: <FechaReserva />,
     },
     {
-      label: "Pago",
+      label: "Selecciona tu mejor plan",
+      component: <ComponentePaso2 />,
+    },
+    {
+      label: "Confirmacion de Datos",
       component: <PagoPaypayComponent />,
     },
   ];

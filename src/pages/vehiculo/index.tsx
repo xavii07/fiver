@@ -110,7 +110,7 @@ const VehiculoPage: React.FC = () => {
                 fontSize: "1rem",
                 width: "100%",
               }}
-              to={RUTAS_PRIVADAS.RESERVA}
+              to={`${RUTAS_PRIVADAS.RESERVA}/${vehiculo.id}`}
             >
               Reservar
             </Link>

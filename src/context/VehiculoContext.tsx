@@ -231,8 +231,6 @@ export const VehiculoProvider: React.FC<VehiculoProviderProps> = ({
         .eq("id", id)
         .single();
 
-      console.log({ data });
-
       if (error) {
         throw new Error(error.message);
       }

@@ -21,7 +21,10 @@ function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route element={<PrivateRoute />}>
-          <Route path={RUTAS_PRIVADAS.RESERVA} element={<ReservaPage />} />
+          <Route
+            path={`${RUTAS_PRIVADAS.RESERVA}/:id`}
+            element={<ReservaPage />}
+          />
           <Route path={RUTAS_PRIVADAS.VEHICULOS} element={<VehiculosPage />} />
           <Route path={RUTAS_PRIVADAS.HOME} element={<AdminPage />} />
           <Route path={RUTAS_PRIVADAS.MARCAS} element={<MarcasPage />} />
