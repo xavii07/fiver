@@ -10,9 +10,6 @@ const FechaReserva: React.FC = () => {
   const inicioTime = dayjs().set("hour", 7).startOf("hour");
   const finTime = dayjs().set("hour", 22).startOf("hour");
 
-  console.log(dateinicio?.format("DD MM YYYY"));
-  console.log(datefin?.format("DD MM YYYY"));
-
   return (
     <div className="contenedor">
       <div
@@ -39,6 +36,7 @@ const FechaReserva: React.FC = () => {
           minTime={inicioTime}
           maxTime={finTime}
           views={["hours", "minutes"]}
+          minutesStep={30}
           format="HH:mm"
           sx={{
             width: "100%",
@@ -68,7 +66,7 @@ const FechaReserva: React.FC = () => {
           ampm={false}
           minTime={inicioTime}
           maxTime={finTime}
-          views={["hours", "minutes"]}
+          views={["hours"]}
           format="HH:mm"
           sx={{
             width: "100%",

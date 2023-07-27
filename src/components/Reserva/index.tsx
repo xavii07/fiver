@@ -12,6 +12,7 @@ import { useVehiculos } from "../../hooks/useVehiculos";
 import { initialValues } from "../../components/RegistroVehiculo/values";
 import { IVehiculoResponse } from "../../interfaces/vehiculo";
 import CardVehiculo from "../CardVehiculo";
+import CardTarifa from "../CardTarifa";
 
 const ComponentePaso2: React.FC = () => {
   const { user } = useAuthContext();
@@ -36,17 +37,43 @@ const ComponentePaso2: React.FC = () => {
   }, [getVehiculoById, id]);
 
   return (
-    <div>
-      <p>Paso 1</p>
-      <h1>DATOS DEL USUARIO</h1>
-      <p>{user.nombres}</p>
-      <p>{user.apellidos}</p>
-      <p>{user.cedula}</p>
-      <p>{user.correoElectronico}</p>
-      <p>{user.celular}</p>
-      <p>{user.provincia}</p>
-      <CardVehiculo vehiculo={vehiculo} />
-    </div>
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "3rem",
+          padding: "3rem",
+        }}
+      >
+        <div
+          style={{
+            flexBasis: "100%",
+            padding: "2rem",
+          }}
+        >
+          <h3>DATOS DEL USUARIO</h3>
+          <p>
+            Nombre: {user.nombres} {user.apellidos}
+          </p>
+          <p>Cedula: {user.cedula}</p>
+          <p>Email: {user.correoElectronico}</p>
+          <p>Celular: {user.celular}</p>
+          <p>Domicilio: {user.provincia}</p>
+        </div>
+        <div style={{ flexShrink: 6 }}>
+          <CardVehiculo vehiculo={vehiculo} />
+        </div>
+      </div>
+      <div>
+        <h3>Total a cancelar</h3>
+        <div style={{ background: "#57b652" }}>
+          <p>Subtotal: {50}</p>
+          <p>IVA: {50 * 0.12}</p>
+          <p>Total: {(50 * 1.12).toFixed(2)}</p>
+        </div>
+      </div>
+    </>
   );
 };
 
@@ -59,7 +86,23 @@ const ReservaComponent: React.FC = () => {
       component: <FechaReserva />,
     },
     {
-      label: "Selecciona tu mejor plan",
+      label: "Selecciona la mejor tarifa",
+      component: (
+        <div
+          style={{
+            display: "flex",
+            marginTop: "5rem",
+            justifyContent: "center",
+            gap: "2rem",
+          }}
+        >
+          <CardTarifa titulo="OFERTA FIVER - 100 KM/DÍA" />
+          <CardTarifa titulo="OFERTA FIVER - KM LIBRE" />
+        </div>
+      ),
+    },
+    {
+      label: "Confirmacion de Datos",
       component: <ComponentePaso2 />,
     },
     {
