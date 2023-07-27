@@ -81,7 +81,7 @@ const VehiculoPage: React.FC = () => {
                 }).format(+`${vehiculo?.precioHora}`)}
               </h1>
               <p style={{ marginTop: 0, color: "#999", textAlign: "center" }}>
-                por Hora
+                /100 Km
               </p>
             </div>
             <div>
@@ -92,7 +92,7 @@ const VehiculoPage: React.FC = () => {
                 }).format(+`${vehiculo?.precioDia}`)}
               </h1>
               <p style={{ marginTop: 0, color: "#999", textAlign: "center" }}>
-                por Dia
+                Km libre
               </p>
             </div>
           </div>

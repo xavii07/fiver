@@ -41,9 +41,8 @@ const Login: React.FC = () => {
         toast.error(error.message);
         return;
       }
-      toast.success("Inicio de sesión exitoso");
+      toast.success(`Bienvenido ${data?.user?.user_metadata?.nombres}`);
       setIsAuth(true);
-      console.log(data);
     },
   });
 

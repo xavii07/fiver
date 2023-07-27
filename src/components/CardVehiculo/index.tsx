@@ -84,7 +84,7 @@ const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculoResponse }) => {
                       color: "#666",
                     }}
                   >
-                    Por Hora
+                    100Km
                   </p>
                 </div>
                 <div>
@@ -102,26 +102,7 @@ const CardVehiculo = ({ vehiculo }: { vehiculo: IVehiculoResponse }) => {
                       color: "#666",
                     }}
                   >
-                    Por Día
-                  </p>
-                </div>
-                <div>
-                  <Chip
-                    component={"h1"}
-                    variant="filled"
-                    sx={{ color: "#fff", fontWeight: "400" }}
-                    color={vehiculo.reservado ? "error" : "primary"}
-                    label={vehiculo.reservado ? "Reservado" : "Disponible"}
-                  />
-                  <p
-                    style={{
-                      margin: 0,
-                      textAlign: "center",
-                      fontSize: "0.8rem",
-                      color: "#666",
-                    }}
-                  >
-                    {"-"}
+                    km libres
                   </p>
                 </div>
               </div>

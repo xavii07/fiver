@@ -37,7 +37,20 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({ children }) => {
   const [isAuth, setIsAuth] = useState(
     localStorage.getItem("sb-zqntnjnwhjchamppgacx-auth-token") ? true : false
   );
-  const [user, setUser] = useState<IUsuarioRegistro>({});
+  const [user, setUser] = useState<IUsuarioRegistro>({
+    cedula: "",
+    nombres: "",
+    apellidos: "",
+    correoElectronico: "",
+    fechaNacimiento: "",
+    rol: "",
+    contrasena: "",
+    celular: "",
+    direccion: "",
+    provincia: "",
+    sexo: "",
+    categoriaLicencia: "",
+  });
 
   useLayoutEffect(() => {
     const token = JSON.parse(

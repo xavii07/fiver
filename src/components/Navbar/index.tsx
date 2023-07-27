@@ -61,7 +61,7 @@ const pagesUsuario = [
   },
 ];
 const rol = "admin";
-const pages = rol === "admin" ? pagesAdmin : pagesUsuario;
+const pages = rol !== "admin" ? pagesAdmin : pagesUsuario;
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();

@@ -110,7 +110,7 @@ const VehiculosPage: React.FC = () => {
       },
       {
         id: "precioHora",
-        header: "$ Hora",
+        header: "$ 100/km",
         accessorKey: "precioHora",
         cell: ({
           cell,
@@ -122,7 +122,7 @@ const VehiculosPage: React.FC = () => {
       },
       {
         id: "precioDia",
-        header: "$ Día",
+        header: "$ km/libre",
         accessorKey: "precioDia",
         cell: ({
           cell,

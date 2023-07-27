@@ -659,12 +659,12 @@ const RegistroVehiculo: React.FC = () => {
                 variant="body1"
                 sx={{ mt: 1, mb: 1, textDecoration: "underline" }}
               >
-                Datos para Reserva
+                Tarifas para Reserva
               </Typography>
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Precio por hora"
+                label="Precio 100 km/dia"
                 variant="outlined"
                 type="number"
                 placeholder="40"
@@ -682,7 +682,7 @@ const RegistroVehiculo: React.FC = () => {
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Precio por dia"
+                label="Precio km/libre"
                 variant="outlined"
                 disabled
                 type="number"
