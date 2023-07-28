@@ -8,9 +8,23 @@ import { Divider } from "@mui/material";
 
 interface ICardTarifaProps {
   titulo: string;
+  opcion1: string;
+  opcion2: string;
+  preciokm?: number;
+  setSelectedTarifa: (tarifa: { preciokm: number; nombre: string }) => void;
 }
 
-const CardTarifa: React.FC<ICardTarifaProps> = ({ titulo }) => {
+const CardTarifa: React.FC<ICardTarifaProps> = ({
+  titulo,
+  opcion1,
+  opcion2,
+  preciokm,
+  setSelectedTarifa,
+}) => {
+  const handleSelectTarifa = (preciokm: number, titulo: string) => {
+    setSelectedTarifa({ preciokm, nombre: titulo });
+  };
+
   return (
     <Box sx={{ minWidth: 250 }}>
       <Card variant="outlined" style={{ padding: "2rem" }}>
@@ -31,8 +45,8 @@ const CardTarifa: React.FC<ICardTarifaProps> = ({ titulo }) => {
             }}
           >
             <ul>
-              <li>Km Limitado</li>
-              <li>Protección del vehículo</li>
+              <li>{opcion1}</li>
+              <li>{opcion2}</li>
             </ul>
           </div>
           <h2
@@ -41,12 +55,17 @@ const CardTarifa: React.FC<ICardTarifaProps> = ({ titulo }) => {
               color: "#01cd74",
             }}
           >
-            USD 46,32
+            USD {preciokm}
           </h2>
           <span> /A diario</span>
         </CardContent>
         <CardActions>
-          <Button variant="contained">ELEGIR ESTA TARIFA</Button>
+          <Button
+            variant="contained"
+            onClick={() => handleSelectTarifa(+`${preciokm}`, titulo)}
+          >
+            ELEGIR ESTA TARIFA
+          </Button>
         </CardActions>
       </Card>
     </Box>

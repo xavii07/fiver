@@ -32,3 +32,22 @@
   width: 256px !important;
   height: 256px !important;
 }
+
+.texto {
+  flex-basis: 100%;
+  color: #222;
+  font-weight: bold;
+}
+
+.container_inicio {
+  display: flex;
+  gap: 1rem;
+  width: 70%;
+  margin-bottom: 2rem;
+}
+
+.container_fin {
+  display: flex;
+  gap: 1rem;
+  width: 70%;
+}

@@ -6,19 +6,17 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import FechaReserva from "../FechaReserva";
 import PagoPaypayComponent from "../PagoPaypal";
-import useAuthContext from "../../context/LoginContext";
+import CardTarifa from "../CardTarifa";
+import InformacionReserva from "../InfoReserva";
 import { useParams } from "react-router-dom";
 import { useVehiculos } from "../../hooks/useVehiculos";
-import { initialValues } from "../../components/RegistroVehiculo/values";
 import { IVehiculoResponse } from "../../interfaces/vehiculo";
-import CardVehiculo from "../CardVehiculo";
-import CardTarifa from "../CardTarifa";
+import { initialValues } from "../RegistroVehiculo/values";
+import { Container } from "@mui/system";
+import { Dayjs } from "dayjs";
 
-const ComponentePaso2: React.FC = () => {
-  const { user } = useAuthContext();
-
-  const { id } = useParams<{ id?: string }>();
-  const { getVehiculoById } = useVehiculos();
+const ReservaComponent: React.FC = () => {
+  const [activeStep, setActiveStep] = useState(0);
   const [vehiculo, setVehiculo] = useState<IVehiculoResponse>({
     ...initialValues,
     imagenes: [],
@@ -27,6 +25,22 @@ const ComponentePaso2: React.FC = () => {
     },
     reservado: false,
   });
+  const [dateinicio, setDateInicio] = useState<Dayjs | null>(null);
+  const [datefin, setDateFin] = useState<Dayjs | null>(null);
+  const [timeinicio, setTimeinicio] = useState<Dayjs | null>(null);
+  const [timefin, setTimeFin] = useState<Dayjs | null>(null);
+  const [selectedtarifa, setSelectedTarifa] = useState<{
+    preciokm: number;
+    nombre: string;
+  }>({
+    preciokm: 0,
+    nombre: "",
+  });
+
+  console.log(selectedtarifa);
+
+  const { id } = useParams<{ id: string }>();
+  const { getVehiculoById } = useVehiculos();
 
   useEffect(() => {
     getVehiculoById(+`${id}`).then((vehiculo) => {
@@ -35,78 +49,219 @@ const ComponentePaso2: React.FC = () => {
       }
     });
   }, [getVehiculoById, id]);
-
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "3rem",
-          padding: "3rem",
-        }}
-      >
-        <div
-          style={{
-            flexBasis: "100%",
-            padding: "2rem",
-          }}
-        >
-          <h3>DATOS DEL USUARIO</h3>
-          <p>
-            Nombre: {user.nombres} {user.apellidos}
-          </p>
-          <p>Cedula: {user.cedula}</p>
-          <p>Email: {user.correoElectronico}</p>
-          <p>Celular: {user.celular}</p>
-          <p>Domicilio: {user.provincia}</p>
-        </div>
-        <div style={{ flexShrink: 6 }}>
-          <CardVehiculo vehiculo={vehiculo} />
-        </div>
-      </div>
-      <div>
-        <h3>Total a cancelar</h3>
-        <div style={{ background: "#57b652" }}>
-          <p>Subtotal: {50}</p>
-          <p>IVA: {50 * 0.12}</p>
-          <p>Total: {(50 * 1.12).toFixed(2)}</p>
-        </div>
-      </div>
-    </>
-  );
-};
-
-const ReservaComponent: React.FC = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const cantidadDias =
+    dateinicio && datefin ? datefin.diff(dateinicio, "day") + 1 : 0;
 
   const steps = [
     {
       label: "Seleccionar Fecha y Hora de su reserva",
-      component: <FechaReserva />,
+      component: (
+        <FechaReserva
+          datefin={datefin}
+          setDateFin={setDateFin}
+          dateinicio={dateinicio}
+          setDateInicio={setDateInicio}
+          timefin={timefin}
+          setTimeFin={setTimeFin}
+          timeinicio={timeinicio}
+          setTimeinicio={setTimeinicio}
+        />
+      ),
     },
     {
       label: "Selecciona la mejor tarifa",
       component: (
-        <div
-          style={{
-            display: "flex",
-            marginTop: "5rem",
-            justifyContent: "center",
-            gap: "2rem",
-          }}
-        >
-          <CardTarifa titulo="OFERTA FIVER - 100 KM/DÍA" />
-          <CardTarifa titulo="OFERTA FIVER - KM LIBRE" />
-        </div>
+        <Container>
+          <div
+            style={{
+              display: "flex",
+              marginTop: "5rem",
+              justifyContent: "center",
+              gap: "2rem",
+            }}
+          >
+            <CardTarifa
+              titulo="OFERTA FIVER - 100 KM/DÍA"
+              opcion1="Km Limitado"
+              opcion2="Proteccion del vehiculo"
+              preciokm={vehiculo.precioHora}
+              setSelectedTarifa={setSelectedTarifa}
+            />
+            <CardTarifa
+              titulo="OFERTA FIVER - KM LIBRE"
+              opcion1="Km Libre"
+              opcion2="Proteccion del vehiculo"
+              preciokm={vehiculo.precioDia}
+              setSelectedTarifa={setSelectedTarifa}
+            />
+          </div>
+          <div>
+            {cantidadDias > 0 && (
+              <div>
+                <div>
+                  <h2>Resumen de la reserva</h2>
+                  <div>
+                    <div>
+                      <h4 style={{ margin: 0 }}>Fecha Retiro</h4>
+                      <p style={{ margin: 0 }}>
+                        {dateinicio?.format("MMMM D, YYYY")}
+                        {" a las "}
+                        {timeinicio?.format("HH:mm")}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 style={{ marginBottom: 0 }}>Fecha Devolucion</h4>
+                      <p style={{ margin: 0 }}>
+                        {datefin?.format("MMMM D, YYYY")}
+                        {" a las "}
+                        {timefin?.format("HH:mm")}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 style={{ marginBottom: 0 }}>Vehiculo</h4>
+                      <p style={{ margin: 0 }}>
+                        {vehiculo.modelo} - {vehiculo.Marca.nombre} -{" "}
+                        {vehiculo.placa}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 style={{ marginBottom: 0 }}>
+                        {selectedtarifa.nombre}
+                      </h4>
+                      <div
+                        style={{
+                          maxWidth: "400px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div>
+                          <p style={{ margin: 0 }}>Diaria</p>
+                          <p style={{ margin: 0 }}>
+                            {cantidadDias} x USD ${selectedtarifa.preciokm}
+                          </p>
+                        </div>
+                        <div>
+                          <p style={{ margin: 0 }}>Total</p>
+                          <p style={{ margin: 0 }}>
+                            USD ${selectedtarifa.preciokm * cantidadDias}
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          maxWidth: "400px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>
+                          <p style={{ marginBottom: 0 }}>Proteccion Parcial</p>
+                          <p style={{ margin: 0 }}>
+                            {cantidadDias} diaria x USD $13,20
+                          </p>
+                        </div>
+                        <div>
+                          <p style={{ margin: 0 }}>
+                            USD ${(13.2 * cantidadDias).toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          maxWidth: "400px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>
+                          <p style={{ marginBottom: 0 }}>IVA (12%)</p>
+                        </div>
+                        <div>
+                          <p style={{ margin: 0 }}>
+                            USD $
+                            {(
+                              (cantidadDias * selectedtarifa.preciokm +
+                                13.2 * cantidadDias) *
+                              0.12
+                            ).toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      background: "#01602a",
+                      maxWidth: "300px",
+                      display: "flex",
+                      marginTop: "2rem",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <p style={{ color: "#78de1f", margin: 0 }}>
+                      Valor Total Esperado
+                    </p>
+                    <h1 style={{ color: "#fff" }}>
+                      USD $
+                      {(
+                        cantidadDias * selectedtarifa.preciokm +
+                        13.2 * cantidadDias +
+                        (cantidadDias * selectedtarifa.preciokm +
+                          13.2 * cantidadDias) *
+                          0.12
+                      ).toFixed(2)}
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </Container>
       ),
     },
     {
-      label: "Confirmacion de Datos",
-      component: <ComponentePaso2 />,
+      label: "Confirmacion de Reserva",
+      component: (
+        <Container>
+          <InformacionReserva vehiculo={vehiculo} />
+          <div>
+            <div
+              style={{
+                background: "#01602a",
+                maxWidth: "300px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <p style={{ color: "#78de1f", margin: 0 }}>
+                Valor Total Esperado
+              </p>
+              <h1 style={{ color: "#fff" }}>
+                USD $
+                {(
+                  cantidadDias * selectedtarifa.preciokm +
+                  13.2 * cantidadDias +
+                  (cantidadDias * selectedtarifa.preciokm +
+                    13.2 * cantidadDias) *
+                    0.12
+                ).toFixed(2)}
+              </h1>
+            </div>
+          </div>
+        </Container>
+      ),
     },
     {
-      label: "Confirmacion de Datos",
+      label: "Pago con Paypal",
       component: <PagoPaypayComponent />,
     },
   ];

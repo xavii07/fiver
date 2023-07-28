@@ -1,58 +1,67 @@
-import "./styles.css";
 import dayjs, { Dayjs } from "dayjs";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
-import React, { useState } from "react";
+import "./styles.css";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
-const FechaReserva: React.FC = () => {
-  const [dateinicio, setDateInicio] = useState<Dayjs | null>(null);
-  const [datefin, setDateFin] = useState<Dayjs | null>(null);
+interface IFechaReservaProps {
+  dateinicio: Dayjs | null;
+  setDateInicio: (date: Dayjs | null) => void;
+  datefin: Dayjs | null;
+  setDateFin: (date: Dayjs | null) => void;
+  timeinicio: Dayjs | null;
+  setTimeinicio: (date: Dayjs | null) => void;
+  timefin: Dayjs | null;
+  setTimeFin: (date: Dayjs | null) => void;
+}
 
-  const inicioTime = dayjs().set("hour", 7).startOf("hour");
+const FechaReserva: React.FC<IFechaReservaProps> = ({
+  dateinicio,
+  setDateInicio,
+  datefin,
+  setDateFin,
+  timeinicio,
+  setTimeinicio,
+  timefin,
+  setTimeFin,
+}) => {
   const finTime = dayjs().set("hour", 22).startOf("hour");
+  const today = dayjs().startOf("day");
+
+  const handleDateChange = (newValue: Dayjs | null) => {
+    setDateInicio(newValue);
+    if (newValue && newValue.isSame(today, "day")) {
+      setTimeinicio(dayjs().startOf("hour"));
+    } else {
+      setTimeinicio(dayjs().set("hour", 7).startOf("hour"));
+    }
+  };
 
   return (
     <div className="contenedor">
-      <div
-        style={{
-          display: "flex",
-          gap: "1rem",
-          width: "70%",
-          marginBottom: "2rem",
-        }}
-      >
-        <p style={{ flexBasis: "100%", color: "#222", fontWeight: "bold" }}>
-          Fecha y Hora - Retiro de Vehiculo
-        </p>
-
+      <div className="container_inicio">
+        <p className="texto">Fecha y Hora - Retiro de Vehiculo</p>
         <DatePicker
           sx={{ width: "100%" }}
           value={dateinicio}
           disablePast
-          onChange={(newValue) => setDateInicio(newValue)}
+          onChange={handleDateChange}
         />
-
         <TimePicker
+          value={timeinicio}
+          disabled={!dateinicio}
           ampm={false}
-          minTime={inicioTime}
+          onChange={(newValue) => setTimeinicio(newValue)}
+          minTime={dayjs().set("hour", 7).startOf("hour")}
           maxTime={finTime}
-          views={["hours", "minutes"]}
-          minutesStep={30}
+          disablePast={dateinicio?.isSame(today, "day")}
+          views={["hours"]}
           format="HH:mm"
-          sx={{
-            width: "100%",
-          }}
+          sx={{ width: "100%" }}
         />
       </div>
-      <div
-        style={{
-          display: "flex",
-          gap: "1rem",
-          width: "70%",
-        }}
-      >
-        <p style={{ flexBasis: "100%", color: "#222", fontWeight: "bold" }}>
-          Fecha y Hora - Devolucion de Vehiculo
-        </p>
+      <div className="container_fin">
+        <p className="texto">Fecha y Hora - Devolucion de Vehiculo</p>
         <DatePicker
           sx={{ width: "100%" }}
           disablePast
@@ -61,16 +70,17 @@ const FechaReserva: React.FC = () => {
           value={datefin}
           onChange={(newValue) => setDateFin(newValue)}
         />
-
         <TimePicker
           ampm={false}
-          minTime={inicioTime}
+          minTime={dayjs().set("hour", 7).startOf("hour")}
+          onChange={(newValue) => setTimeFin(newValue)}
+          value={timefin}
+          disabled={!datefin}
+          disablePast={datefin?.isSame(today, "day")}
           maxTime={finTime}
           views={["hours"]}
           format="HH:mm"
-          sx={{
-            width: "100%",
-          }}
+          sx={{ width: "100%" }}
         />
       </div>
     </div>
