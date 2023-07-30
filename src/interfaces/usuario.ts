@@ -15,5 +15,5 @@ export interface IUsuarioRegistro {
   provincia: string;
   sexo: string;
   categoriaLicencia: string;
-  rol: string;
+  rol?: string;
 }
