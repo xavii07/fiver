@@ -15,6 +15,7 @@ import Loader from "./components/Loader";
 import AdminPage from "./pages/admin";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
+import ReservaVehiculoPage from "./pages/reservaVehiculo";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
           <Route
             path={RUTAS_PRIVADAS.REGISTRO_VEHICULO}
             element={<RegistroVehiculoPage />}
+          />
+          <Route
+            path={RUTAS_PRIVADAS.RESERVAS}
+            element={<ReservaVehiculoPage />}
           />
         </Route>
 

@@ -36,6 +36,10 @@ const pagesAdmin = [
     name: "Perfil",
     path: "/admin",
   },
+  {
+    name: "Reservas",
+    path: "/admin/reservas",
+  },
 ];
 
 const pagesUsuario = [
@@ -61,7 +65,7 @@ const pagesUsuario = [
   },
 ];
 const rol = "admin";
-const pages = rol !== "admin" ? pagesAdmin : pagesUsuario;
+const pages = rol === "admin" ? pagesAdmin : pagesUsuario;
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();

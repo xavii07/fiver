@@ -14,4 +14,5 @@ export const RUTAS_PRIVADAS = {
   MARCAS: "/admin/marcas",
   REGISTRO_MARCA: "/admin/marcas/registro",
   RESERVA: "/cliente/reserva",
+  RESERVAS: "/admin/reservas",
 };
