@@ -1,8 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { customizeErrorMessages, supabase } from "../supabase/client";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-import { RUTAS_PRIVADAS } from "../router/router";
 import { IMarca } from "../interfaces/marca";
 import { IReserva } from "../interfaces/reserva";
 
@@ -49,7 +47,6 @@ export const ReservaVehiculoProvider: React.FC<
   const [reservas, setReservas] = useState<IReserva[]>([]);
   const [isloading, setIsloading] = useState<boolean>(false);
   const [editreserva, setEditReserva] = useState<IReserva>({} as IReserva);
-  const navigation = useNavigate();
 
   const memorizedGetReservas = useCallback(() => {
     getReservasVehiculos();

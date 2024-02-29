@@ -1,17 +1,12 @@
 import { Container, Typography } from "@mui/material";
 import { useCallback, useEffect, useMemo } from "react";
 
-import { RUTAS_PRIVADAS } from "../../router/router";
 import Loader from "../../components/Loader";
 import TablaComponent from "../../components/Tabla";
-import { useNavigate } from "react-router-dom";
 import { useReservaVehiculo } from "../../hooks/useReservaVehiculo";
 
 const ReservaVehiculoPage: React.FC = () => {
   const { reservas, getReservasVehiculos, isloading } = useReservaVehiculo();
-  console.log(reservas);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     memorizedGetReservasVehiculos();
